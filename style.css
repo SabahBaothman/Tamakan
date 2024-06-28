@@ -1,13 +1,63 @@
 :root {
     --dark: #183D61;
     --green: #BCA58B;
-    --background: #f4f4f4
+
+    --background: #F5F5F5
+
 }
 
+/* General styles for the body */
 body {
-    font-family: Poppins;
     margin: 0;
-    background: var(--background);
-    padding-top: 30px;
-
+    font-family: Arial, sans-serif;
 }
+
+/* ------------ NAVBAR ------------ */
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    background-color: var(--dark); /* Set the background color to blue */
+    height: 90px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Optional shadow effect */
+}
+
+.nav-left {
+    display: flex;
+    align-items: center;
+}
+
+#nav-logo-holder img {
+    width: 80px; /* Ensure the logo is 80px wide */
+}
+
+@media (max-width: 768px) {
+    nav {
+        flex-direction: column;
+        align-items: flex-start;
+        height: auto;
+        padding: 10px;
+    }
+
+    .nav-left {
+        width: 100%;
+        justify-content: center;
+    }
+
+    #nav-logo-holder img {
+        width: 60px; /* Adjust logo size for smaller screens */
+    }
+}
+
+@media (max-width: 480px) {
+    nav {
+        padding: 5px;
+    }
+
+    #nav-logo-holder img {
+        width: 50px; /* Adjust logo size for the smallest screens */
+    }
+}
+
+/* ------------ EXPLIN PAGE ------------ */
