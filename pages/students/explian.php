@@ -8,9 +8,7 @@
     <title>index</title>
 </head>
 
-<?php
-include('../nav.php');
-?>
+
 
 <body>
 </body>
