@@ -1,6 +1,3 @@
-
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,7 +10,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.9.359/pdf.min.js"></script>
 </head>
 
-
+<?php
+include('../nav.php');
+?>
 
 <body>
     <div id="lesson_menu">
