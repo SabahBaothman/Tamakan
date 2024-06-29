@@ -1,15 +1,16 @@
 :root {
     --dark: #183D61;
     --green: #BCA58B;
-
-    --background: #F5F5F5
+    --blue-dark: #12304e;
+    --background: #F5F5F5;
 
 }
 
 /* General styles for the body */
 body {
     margin: 0;
-    font-family: Arial, sans-serif;
+    font-family: Poppins;
+    background-color: var(--background);
 }
 
 .paddContainer{
@@ -23,8 +24,14 @@ nav {
     align-items: center;
     padding: 0 20px;
     background-color: var(--dark); /* Set the background color to blue */
-    height: 90px;
+    height: 75px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Optional shadow effect */
+    width: 100%;
+    box-sizing: border-box;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
 }
 
 .nav-left {
@@ -65,12 +72,237 @@ nav {
 }
 
 /* ------------ EXPLIN PAGE ------------ */
+/* Menu styling */
+#lesson_menu {
+    width: 20%;
+    height: calc(100vh - 50px); /* Full height of the viewport minus the navbar height */
+    background-color: var(--blue-dark);
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    box-sizing: border-box;
+    position: fixed;
+    left: 0;
+    top: 70px; /* Place the menu below the navbar */
+}
+
+#lesson_menu h5 {
+    margin-top: 30px;
+    margin-bottom: 20px;
+    font-size: medium;
+}
+
+#lesson_menu ul {
+    list-style: none;
+    padding: 0;
+    width: 100%;
+}
+
+#lesson_menu li {
+    margin-bottom: 0%;
+    width: 110%;
+}
+
+#lesson_menu a {
+    background-color: var(--dark);
+    color: white;
+    text-decoration: none;
+    display: block;
+    padding: 10px;
+    transition: background-color 0.3s;
+}
+
+#lesson_menu a:hover {
+    background-color: var(--green);
+}
+/* Container for the PDF */
+#explin_container {
+    margin-left: 20%; /* Leave space for the fixed menu */
+    width: 60%; /* Adjust the width as needed */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    box-sizing: border-box;
+    margin: 0 auto; /* Center the container horizontally */
+}
+
+#pdf-container {
+    margin-top: 15%;
+    margin-left: 35%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#pdf-canvas {
+    width: 100%;
+    height: auto;
+    border-radius: 24px; /* Default border-radius */
+}
+
+#navigation-controls {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+#prev-page, #next-page {
+    background: none;
+    border: none;
+    font-size: 35px;
+    cursor: pointer;
+    color: var(--blue-dark);
+    margin: 0 330%;
+    margin-top: -400%;
+    border-radius: 24px; /* Default border-radius */
+}
+
+#prev-page:hover, #next-page:hover {
+    color:var(--dark);
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+    #pdf-canvas,
+    #prev-page,
+    #next-page {
+        border-radius: 20px; /* Adjusted for smaller screens */
+    }
+}
+
+@media (max-width: 480px) {
+    #pdf-canvas,
+    #prev-page,
+    #next-page {
+        border-radius: 16px; /* Further adjustment for even smaller screens */
+    }
+}
+
+#toggleRecord{
+    background-color: var(--green);
+    border: none;
+    border-radius: 50%;
+    color: white;
+    font-size: 20px;
+    width: 55px;
+    height: 55px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    outline: none;
+    transition: background-color 0.3s;
+}
+
+#toggleRecord:hover {
+  background-color: #616161;
+  cursor: pointer;
+  transition: all 0.2s ease-out;
+}
+
+/* ------------ LOGIN PAGE ------------- */
+.login-nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 20px;
+    background-color: var(--dark); /* Set the background color to blue */
+    height: 90px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Optional shadow effect */
+}
+
+
+.login-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.login-form {
+    background: white;
+    padding: 50px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    max-width: 450px;
+    width: 100%;
+    text-align: center;
+}
+
+.login-form h1 {
+    margin-bottom: 20px;
+}
+
+.login-form label {
+    color: #676468;
+    display: block;
+    text-align: left;
+    font-size: 14px;
+    margin-top: 10px;
+}
+
+.login-form input {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.login-form button {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: var(--dark);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+}
+
+.login-form button:hover {
+    background-color: #BCA58B;
+}
+
+.login-form a {
+    color: #676468;
+}
+#pass-link{
+    text-align: right;
+    font-size: 14px;
+    display: block;
+    margin-top: 10px;
+    text-decoration: none;
+}
+
+.login-form a:hover {
+    color: #183D61;
+}
+
+#brown-line {
+    margin-top: 40px;
+    margin-bottom: 20px;
+    color: #BCA58B;
+    width: 80%;
+}
+
+.login-form p {
+    font-size: 14px;
+    display: block;
+    color: #676468;
+}
+
 
 
 /* ------------ CHAPTERS PAGE ------------ */
 
 .header {
-    margin-bottom: 3em;
+    margin: 4em 0;
 }
 
 .pageTitle h2 {
@@ -90,7 +322,7 @@ nav {
 .pageSubtitle p {
     color: #555;
     z-index: 1; /* Ensure the subtitle is above the line */
-    background-color: #fff; 
+    background-color: #F5F5F5; 
     padding: 0 10px;
     margin: 0; 
 }
@@ -98,7 +330,7 @@ nav {
 .pageSubtitle button {
     margin-left: auto;
     z-index: 1; /* Ensures the button stays on top of the line */
-    border: 5px solid #fff;
+    border: 5px solid #F5F5F5;
     color:#fff;
     padding: 15px 23px;
     border-radius: 10px;
