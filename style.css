@@ -199,6 +199,7 @@ nav {
   background-color: #616161;
   cursor: pointer;
   transition: all 0.2s ease-out;
+}
 
 /* ------------ LOGIN PAGE ------------- */
 .login-nav {
