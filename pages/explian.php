@@ -34,6 +34,9 @@ include('nav.php');
             <div class="recording-controls">
         <button id="toggleRecord"><i class="fas fa-microphone-slash"></i></button>
       </div>
+      <div class="submit-button">
+      <button type="button">Submit</button>
+      </div>
         </div>
     </div>
     <script>

@@ -221,6 +221,11 @@ nav {
   transition: all 0.2s ease-out;
 }
 
+.submit-button{
+margin-left: 80%;
+margin-top: -6.7%;
+}
+
 /* ------------ LOGIN PAGE ------------- */
 .login-nav {
     display: flex;
