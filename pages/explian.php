@@ -40,7 +40,7 @@ include('nav.php');
         </div>
     </div>
     <script>
-        var url = '../../sample.pdf'; // URL to the PDF file
+        var url = '../../CPCS433_Deep_learning_Network_Convolutional_Neural_Networks.pdf'; // URL to the PDF file
 
         var pdfDoc = null,
             pageNum = 1,
