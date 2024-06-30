@@ -173,8 +173,8 @@ nav {
     font-size: 35px;
     cursor: pointer;
     color: var(--blue-dark);
-    margin: 0 330%;
-    margin-top: -400%;
+    margin: 0 300%;
+    margin-top: -180%;
     border-radius: 24px; /* Default border-radius */
 }
 
