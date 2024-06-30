@@ -415,6 +415,7 @@ nav {
         .hr-container {
             display: flex;
             justify-content: flex-start;
+            margin-bottom: 50px;
         }
 
         .add-chapter-form {
@@ -704,4 +705,127 @@ nav {
 
 #scoreBtn:hover {
     background-color: #a08668;
+}
+
+/* ------------ COURSES (SUBJECTES) PAGE ------------ */
+
+.subjects-container h4 {
+    margin-bottom: 4px;
+}
+
+#subjects-line {
+    color: #BCA58B;
+    width: 8%;
+    border: 1px solid #BCA58B;
+    margin: 0;
+}
+
+.subjects-container {
+    padding: 60px 60px 20px; /* Increased top padding for more space between header and content */
+}
+
+.slideshow-container {
+    position: relative;
+    max-width: 100%;
+    margin: auto;
+    overflow: hidden;
+    padding: 0 80px; /* Increased space between edge of the page and cards */
+}
+
+.slides {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+    width: 100%;
+}
+
+.slide {
+    display: flex;
+    flex: 1;
+    justify-content: space-between;
+    min-width: 100%;
+    box-sizing: border-box;
+}
+
+.subject-card {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Added shadow to cards */
+    padding: 20px;
+    text-align: left;
+    width: 30%;
+    margin: 0 20px; /* Increased space between cards */
+    box-sizing: border-box;
+}
+
+.subject-card h4 {
+    margin: 0;
+}
+
+.subject-card p {
+    color: #555;
+    margin: 5px 0; /* Reduced space between subject name and code */
+}
+
+.subject-card button {
+    background-color: var(--dark);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 15px; /* Increased button height */
+    cursor: pointer;
+    margin-top: 30px; /* Increased space between code and button */
+    display: block;
+    width: 100%;
+    text-align: center;
+}
+
+.subject-card button:hover {
+    background-color: var(--secondary);
+}
+
+.prev, .next {
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    width: auto;
+    padding: 20px; /* Increased padding for bigger arrows */
+    margin-top: -30px; /* Adjusted margin to center arrows vertically */
+    color: var(--secondary); /* Use the same color as the header */
+    font-weight: bold;
+    font-size: 32px; /* Increased font size */
+    user-select: none;
+    background: none; /* Remove the background color */
+    border: none; /* Remove the border */
+}
+
+.prev {
+    left: 0;
+}
+
+.next {
+    right: 0;
+}
+
+.prev:hover, .next:hover {
+    color: #555; /* Slightly darker on hover */
+}
+
+.dots {
+    text-align: center;
+    padding: 30px 10px 0; /* Increased space between cards and dots */
+}
+
+.dot {
+    cursor: pointer;
+    height: 15px;
+    width: 15px;
+    margin: 0 2px;
+    background-color: #bbb;
+    border-radius: 50%;
+    display: inline-block;
+    transition: background-color 0.6s ease;
+}
+
+.dot.active {
+    background-color: var(--secondary);
 }
