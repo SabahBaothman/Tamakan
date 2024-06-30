@@ -4,14 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
-    <link rel="stylesheet" href="../../style.css">
+    <link rel="stylesheet" href="../style.css">
    
 </head>
 
 <body>
    
     <nav class="login-nav">
-                <img id="logo" src="../../images/logo.png" alt="Logo" width="80">
+                <img id="logo" src="../images/logo.png" alt="Logo" width="80">
     </nav>
 
     <main class="login-page">
