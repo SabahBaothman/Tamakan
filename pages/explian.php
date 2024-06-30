@@ -34,10 +34,13 @@ include('nav.php');
             <div class="recording-controls">
         <button id="toggleRecord"><i class="fas fa-microphone-slash"></i></button>
       </div>
+      <div class="submit-button">
+      <button type="button">Submit</button>
+      </div>
         </div>
     </div>
     <script>
-        var url = '../../sample.pdf'; // URL to the PDF file
+        var url = '../../CPCS433_Deep_learning_Network_Convolutional_Neural_Networks.pdf'; // URL to the PDF file
 
         var pdfDoc = null,
             pageNum = 1,
@@ -102,5 +105,6 @@ include('nav.php');
             queueRenderPage(pageNum);
         });
     </script>
+        <script src="../VoiceModel/input.js"></script>
 </body>
 </html>
