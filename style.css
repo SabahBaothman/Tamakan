@@ -1,6 +1,6 @@
 :root {
     --dark: #183D61;
-    --green: #BCA58B;
+    --secondary: #BCA58B;
     --blue-dark: #12304e;
     --background: #F5F5F5;
 
@@ -15,6 +15,22 @@ body {
 
 .paddContainer{
     padding: 4em;
+}
+
+button {
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+    background-color: var(--dark);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    min-width: 12%;
+}
+
+button:hover {
+    background-color: var(--secondary);
 }
 
 /* ------------ NAVBAR ------------ */
@@ -115,7 +131,7 @@ nav {
 }
 
 #lesson_menu a:hover {
-    background-color: var(--green);
+    background-color: var(--secondary);
 }
 /* Container for the PDF */
 #explin_container {
@@ -184,7 +200,7 @@ nav {
 }
 
 #toggleRecord{
-    background-color: var(--green);
+    background-color: var(--secondary);
     border: none;
     border-radius: 50%;
     color: white;
@@ -256,17 +272,7 @@ nav {
 
 .login-form button {
     margin-top: 20px;
-    padding: 10px;
-    background-color: var(--dark);
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
     width: 100%;
-}
-
-.login-form button:hover {
-    background-color: #BCA58B;
 }
 
 .login-form a {
@@ -298,7 +304,6 @@ nav {
 }
 
 
-
 /* ------------ CHAPTERS PAGE ------------ */
 
 .header {
@@ -322,24 +327,16 @@ nav {
 .pageSubtitle p {
     color: #555;
     z-index: 1; /* Ensure the subtitle is above the line */
-    background-color: #F5F5F5; 
+    background-color: var(--background); 
     padding: 0 10px;
     margin: 0; 
 }
 
 .pageSubtitle button {
+    border-radius: 10px;
     margin-left: auto;
     z-index: 1; /* Ensures the button stays on top of the line */
-    border: 5px solid #F5F5F5;
-    color:#fff;
-    padding: 15px 23px;
-    border-radius: 10px;
-    background-color: #183D61;
-    cursor: pointer;
-}
-
-.pageSubtitle button:hover {
-    background-color: #112f4c;
+    border: 5px solid var(--background);
 }
 
 .pageSubtitle::after {
@@ -348,7 +345,7 @@ nav {
     left: 0;
     right: 0;
     top: 50%; /* Aligns the line in the middle vertically */
-    border-bottom: 3px solid #BCA58B; /* Line style */
+    border-bottom: 3px solid var(--secondary); /* Line style */
     z-index: 0; /* Positions the line behind the text and button */
 }
 
@@ -382,7 +379,7 @@ nav {
 }
 
 .chapterCard div {
-    background-color: #fff;
+    background-color: white;
     flex-grow: 1;
     border-radius: 0px 0px 10px 10px;
     overflow: hidden;
@@ -390,7 +387,7 @@ nav {
 
 .chapterCard h1{
     padding: 15%;
-    color: #fff;
+    color: white;
 }
 
 .chapterCard div p{
@@ -398,3 +395,67 @@ nav {
     padding: 0px 15px;
 }
 
+
+/* ------------ LESSONS PAGE ------------ */
+
+.lessonCard {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    background-color: white;
+    padding: 15px 30px;
+    border-radius: 10px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    margin-bottom: 25px;
+}
+
+.lessonCard .leftContent {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.lessonCard .leftContent .uncheck { /* Checkbox styles if the user not submit explanation yet */
+    min-width: 35px;
+    min-height: 35px;
+    margin-right: 3%;
+    border-radius: 5px;
+    background-color: #ece4dc;
+}
+
+.lessonCard .leftContent .checked { /* Checkbox styles if the user submit explanation */
+    width: 35px;
+    height: 35px;
+    margin-right: 3%;
+    border-radius: 5px;
+    background-color: var(--dark);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.checkmark { 
+    height: 50%; 
+    width: 15%; 
+    border-bottom: 3px solid white; 
+    border-right: 3px solid white; 
+    transform: rotate(45deg); 
+} 
+
+.lessonCard .rigthContent {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+#scoreBtn {
+    background-color: var(--secondary);
+    margin-right: 15px;
+}
+
+#scoreBtn:hover {
+    background-color: #a08668;
+}
