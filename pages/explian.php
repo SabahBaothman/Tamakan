@@ -102,5 +102,6 @@ include('nav.php');
             queueRenderPage(pageNum);
         });
     </script>
+        <script src="../VoiceModel/input.js"></script>
 </body>
 </html>
