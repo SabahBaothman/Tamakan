@@ -17,12 +17,10 @@ include('./nav.php');
 
         <!-- HEADER -->
         <div class="header">
-            <div class="pageTitle">
-                <h2>Chapters</h2>
-            </div>
+            <h2 class="pageTitle">Chapters</h2>
             <div class="pageSubtitle">
                 <p><span>Database / CPCS-241</span></p>
-                <button type="button">Add Chapter</button>
+                <button type="button" class="button">Add Chapter</button>
             </div>
         </div>
 

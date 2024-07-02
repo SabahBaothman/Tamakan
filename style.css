@@ -17,7 +17,7 @@ body {
     padding: 4em;
 }
 
-button {
+.button {
     display: flex;
     justify-content: center;
     padding: 10px;
@@ -29,7 +29,7 @@ button {
     min-width: 12%;
 }
 
-button:hover {
+.button:hover {
     background-color: var(--secondary);
 }
 
@@ -317,7 +317,7 @@ margin-top: -6.7%;
     margin: 4em 0;
 }
 
-.pageTitle h2 {
+.pageTitle {
     font-size: 24px;
     color: #333;
     font-weight: bold;
@@ -710,4 +710,226 @@ margin-top: -6.7%;
 
 .dot.active {
     background-color: var(--secondary);
+}
+
+
+/* EVALUATION PAGE */
+
+.headContent {
+    width: auto;
+    display: inline-block;
+    flex-direction: column;
+}
+
+.headContent .pageTitle{
+    margin-bottom: 0.5em;
+}
+
+.headContent div {
+    width: auto;
+    height: 3px;
+    background-color: var(--secondary);
+}
+
+#totalContainer {
+    padding-left: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+#totalContainer p {
+    padding-left: 0;
+    width: 8%;
+}
+
+#totalScore {
+    display: flex;
+    flex-direction: row;
+    background-color: var(--background);
+    z-index: 1;
+    padding-left: 2%;
+}
+
+#totalScore p span {
+    font-size: 7em;
+    font-weight: bold;
+    background: linear-gradient(to bottom, var(--dark), var(--secondary)); /* Create a gradient for the background */
+    -webkit-background-clip: text;  /* Clip the background so it only applies to the text */
+    background-clip: text;
+    color: transparent; /* Change the text color to transparent so the gradient shows through */
+}
+
+.evalCard {
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    margin-bottom: 30px;
+}
+
+.evalCard .upHalf {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    background-image: url('images/background.png');
+    background-size: cover;
+    background-position: right;
+    padding: 10px 30px;
+    border-radius: 10px 10px 0 0;
+}
+
+.evalCard .upHalf h3 { /* Styles of LLO title */
+    color: white;
+    font-weight: bold;
+    margin: 0;
+}
+
+.scoreExplain { /* Styles of question mark button */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #F6F3EE;
+    border: none;
+    border-radius: 20px;
+    width: 1.7em;
+    height: 1.7em;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.scoreExplain:hover {
+    background-color: #e1dbd0;
+}
+
+.evalCard .downHalf {
+    padding: 20px 30px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    background-color: white;
+    border-radius: 0 0 10px 10px;
+}
+
+.evalCard .downHalf div{
+    flex: 1;
+}
+
+.evalCard .downHalf div p {
+    max-width: 90%;
+}
+
+.scoreContainer {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding-top: 10px; /* Adjust this to increase/decrease space between upHalf and scoreBar */
+}
+
+.scoreBar {
+    height: 16px;
+    background-color: #F6F3EE;
+    border-radius: 5px;
+}
+
+.scorePer {
+    height: 16px;
+    color: white;
+    background-color: var(--secondary);
+    border-radius: 5px;
+    position: relative;
+    animation: fillBars 2.5s 1;
+}
+
+.scorePer::before {
+    content: attr(per);
+    position: absolute;
+    padding: 4px 6px;
+    background-color: var(--secondary);
+    border-radius: 4px;
+    top: -35px;
+    right: 0;
+    transform: translateX(50%);
+}
+
+.scorePer::after {
+    content: "";
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background-color: var(--secondary);
+    top: -15px;
+    right: 0;
+    border-radius: 2px;
+    transform: translateX(50%) rotate(45deg);
+
+}
+
+@keyframes fillBars {
+    from {
+        width: 0;
+    } to {
+        width: 100%;
+    }
+}
+
+#popup {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0,0.5);
+    z-index: 10000;
+    cursor: pointer;
+    display: none;
+}
+
+.popupContent {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    max-width: 50%;
+    min-width: 25%;
+    max-height: 50%;
+    transform: translate(-50%, -50%);
+    padding: 30px;
+    border-radius: 5px;
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    cursor: default;
+}
+
+.popupContent h3 {
+    font-weight: normal;
+    color: var(--dark);
+}
+
+.popupContent h3 span {
+    padding: 0 10px;
+    font-size: 30px;
+    color: var(--secondary);
+}
+
+.popupContent .separator {
+    background-color: #F6F3EE;
+    width: 100%;
+    height: 1px;
+}
+
+.popupContent p {
+    padding-top: 20px;
+}
+
+.close {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 25px;
+    font-weight: bold;
+    cursor: pointer;
 }

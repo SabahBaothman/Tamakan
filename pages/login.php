@@ -26,7 +26,7 @@
                 <label for="password">Your password</label>
                 <input type="password" id="password" placeholder="********">
                 
-                <button type="submit">Log in</button>
+                <button type="submit" class="button">Log in</button>
             </form>
 
             <!-- Forget Password Link -->
