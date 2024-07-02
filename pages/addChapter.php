@@ -11,11 +11,15 @@
     include('nav.php');
 ?>
 <body>
-    <main class="add-chapter-container">
-        <h4>Add Chapter</h4>
-        <div class="hr-container">
-            <hr id="add-chapter-line">
+    <main class="paddContainer">
+        <!-- Header -->
+        <div class="header">
+            <div class="headContent">
+                <h2 class="pageTitle">Add Chapter</h2>
+                <div></div>
+            </div>
         </div>
+
         <form class="add-chapter-form">
 
             <!-- Form Fields -->
@@ -61,7 +65,7 @@
                 <label for="upload-chapter"><u>Click to Upload Chapter</u></label>
             </div>
             
-            <button type="submit">Submit</button>
+            <button type="submit" class="button">Submit</button>
         </form>
     </main>
     

@@ -14,10 +14,13 @@
     
     
     <!-- Main Container -->
-    <div class="subjects-container">
-        <h4>Your Subjects</h4>
-        <div class="hr-container">
-            <hr id="subjects-line">
+    <div class="paddContainer">
+        <!-- Header -->
+        <div class="header">
+            <div class="headContent">
+                <h2 class="pageTitle">Your Subjects</h2>
+                <div></div>
+            </div>
         </div>
 
         <!-- Slideshow -->

@@ -35,7 +35,7 @@ include('nav.php');
         <button id="toggleRecord"><i class="fas fa-microphone-slash"></i></button>
       </div>
       <div class="submit-button">
-      <button type="button">Submit</button>
+      <button type="button" class="button">Submit</button>
       </div>
         </div>
     </div>

@@ -507,7 +507,7 @@ margin-top: -6.7%;
             cursor: pointer;
         }
 
-        .add-chapter-form button[type="submit"] {
+        /* .add-chapter-form button[type="submit"] {
             width: 8%;
             margin-top: 20px;
             padding: 10px;
@@ -521,8 +521,7 @@ margin-top: -6.7%;
 
         .add-chapter-form button[type="submit"]:hover {
             background-color: #001122;
-        }
-
+        } */
 
 
 /* ------------ LESSONS PAGE ------------ */
@@ -713,7 +712,7 @@ margin-top: -6.7%;
 }
 
 
-/* EVALUATION PAGE */
+/* ------------ EVALUATION PAGE ------------ */
 
 .headContent {
     width: auto;
