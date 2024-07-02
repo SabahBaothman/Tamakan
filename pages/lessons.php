@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="../../style.css">
-    <title>Chapters</title>
+    <title>Lessons</title>
 </head>
 
 <?php
@@ -16,9 +16,7 @@ include('./nav.php');
 
         <!-- HEADER -->
         <div class="header">
-            <div class="pageTitle">
-                <h2>Lessons</h2>
-            </div>
+            <h2 class="pageTitle">Lessons</h2>
             <div class="pageSubtitle">
                 <p><span>Database and Database users</span></p>
             </div>
@@ -35,8 +33,8 @@ include('./nav.php');
                 </div>
 
                 <div class="rigthContent">
-                    <button id="scoreBtn" type="button">View Score</button>
-                    <button type="button">Explain</button>
+                    <button id="scoreBtn" type="button" class="button">View Score</button>
+                    <button type="button" class="button">Explain</button>
                 </div>
             </div>
 
@@ -47,7 +45,7 @@ include('./nav.php');
                 </div>
 
                 <div class="rigthContent">
-                    <button type="button">Explain</button>
+                    <button type="button" class="button">Explain</button>
                 </div>
             </div>
         </div>

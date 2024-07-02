@@ -30,10 +30,16 @@ $conn->close();
 </head>
 <?php include('nav.php'); ?>
 <body>
-    <div class="subjects-container">
-        <h4>Your Subjects</h4>
-        <div class="hr-container">
-            <hr id="subjects-line">
+    
+    
+    <!-- Main Container -->
+    <div class="paddContainer">
+        <!-- Header -->
+        <div class="header">
+            <div class="headContent">
+                <h2 class="pageTitle">Your Subjects</h2>
+                <div></div>
+            </div>
         </div>
 
         <?php if (count($courses) > 0): ?>
