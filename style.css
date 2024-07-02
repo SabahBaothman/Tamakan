@@ -227,6 +227,22 @@ margin-top: -6.7%;
 }
 
 /* ------------ LOGIN PAGE ------------- */
+.error {
+
+    
+ 
+    color: #9e0f0f;
+ 
+    padding: 5px;
+ 
+    width: 95%;
+ 
+    
+ 
+    margin: 20px auto;
+ 
+ }
+ 
 .login-nav {
     display: flex;
     align-items: center;
