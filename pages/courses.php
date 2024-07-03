@@ -9,7 +9,7 @@ session_start();
 include('../db/db_conn.php');
 
 $user_id = $_SESSION['id'];
-$sql = "SELECT id, name FROM course WHERE teacher_id = '2010332'";
+$sql = "SELECT id, name FROM course WHERE teacher_id = ?";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $user_id);
 $stmt->execute();
@@ -74,8 +74,8 @@ $conn->close();
             </div>
         <?php else: ?>
             <div class="no-content">
-                <img src="../images/noContent.png" alt="No Content">
-                <p>No Subjects Found</p>
+                <img src="../images/noContent.png" alt="No Content" width="400">
+                <h2>No Subjects Found</h2>
             </div>
         <?php endif; ?>
     </div>

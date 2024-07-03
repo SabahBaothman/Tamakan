@@ -227,22 +227,7 @@ margin-top: -6.7%;
 }
 
 /* ------------ LOGIN PAGE ------------- */
-.error {
 
-    
- 
-    color: #9e0f0f;
- 
-    padding: 5px;
- 
-    width: 95%;
- 
-    
- 
-    margin: 20px auto;
- 
- }
- 
 .login-nav {
     display: flex;
     align-items: center;
@@ -294,8 +279,22 @@ margin-top: -6.7%;
 }
 
 .login-form button {
+    /* margin-top: 20px;
+    width: 100%; */
     margin-top: 20px;
+    padding: 10px;
+    background-color: var(--dark);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
     width: 100%;
+}
+
+.login-form button:hover {
+    
+    background-color: var(--secondary);
+    
 }
 
 .login-form a {
@@ -320,11 +319,19 @@ margin-top: -6.7%;
     width: 80%;
 }
 
-.login-form p {
+/* .login-form p {
     font-size: 14px;
     display: block;
     color: #676468;
-}
+} */
+
+.error {
+    color: #9e0f0f;
+    padding: 5px;
+    width: 95%;
+    margin: 20px auto;
+ }
+ 
 
 
 /* ------------ CHAPTERS PAGE ------------ */
@@ -605,6 +612,22 @@ margin-top: -6.7%;
 }
 
 /* ------------ COURSES (SUBJECTES) PAGE ------------ */
+
+.no-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    /* height: 100vh; Adjust this value to fit your layout */
+}
+.no-content h2 {
+    color: rgba(0, 0, 0, 0.25);
+}
+
+.no-content img {
+    opacity: 0.25;
+}
 
 .subjects-container h4 {
     margin-bottom: 4px;

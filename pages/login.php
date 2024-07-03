@@ -29,7 +29,7 @@
                     <p class="error"><?php echo $_GET['error']; ?></p>
                 <?php } ?>
 
-                <button type="submit">Log in</button>
+                <button class="submit" type="submit">Log in</button>
             </form>
 
             
@@ -39,7 +39,7 @@
             <hr id="brown-line">
 
             <!-- Don't have an account? -->
-            <p>Don't have an account? <a href="#"><u>Sign up</u></a> </p>
+            <!-- <p>Don't have an account? <a href="#"><u>Sign up</u></a> </p> -->
         </section>
     </main>
 </body>
