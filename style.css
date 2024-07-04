@@ -428,6 +428,8 @@ margin-top: -6.7%;
 }
 
 /* --------------- ADD CHAPTER PAGE -------------- */
+
+
 .add-chapter-container {
             padding: 50px;
         }
@@ -484,6 +486,19 @@ margin-top: -6.7%;
 
         .input-block input, .input-block label {
             width: 48%;
+        }
+
+        .slides-block {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+           
+        }
+
+        .slides-block input {
+            width: 10%;
+            margin: auto 20px;
         }
 
         #add-llos {
