@@ -362,14 +362,12 @@ margin-top: -6.7%;
     margin: 0; 
 }
 
-.pageSubtitle button {
+.chaptersBtn {
     border-radius: 10px;
     margin-left: auto;
     z-index: 1; /* Ensures the button stays on top of the line */
     border: 5px solid var(--background);
 }
-
-
 
 .pageSubtitle::after {
     content: '';
