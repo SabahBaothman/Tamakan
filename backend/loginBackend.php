@@ -52,12 +52,12 @@ if (isset($_POST['id']) && isset($_POST['password'])) {
                 $_SESSION['user_type'] = $row['type'];
 
                 // Redirect to the courses page
-                header("Location: courses.php");
+                header("Location: ../pages/courses.php");
                 exit();
             }
             else {
                 // Redirect to login page with error message for incorrect ID or password
-                header("Location: login.php?error=Incorect ID or password");
+                header("Location: ../pages/login.php?error=Incorect ID or password");
                 exit();
             }
         }

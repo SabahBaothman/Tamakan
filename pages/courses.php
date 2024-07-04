@@ -4,7 +4,17 @@
     include('../db/db_conn.php');
 
     $user_id = $_SESSION['id'];
-    $sql = "SELECT id, name FROM course WHERE teacher_id = ?";
+    
+    if($_SESSION['user_type'] == 't') {
+        // If the user is a teacher
+        $sql = "SELECT id, name FROM course WHERE teacher_id = ?";
+    } else {
+        // If the user is a student
+        $sql = "SELECT course.id, course.name FROM course 
+                JOIN enrollment ON course.id = enrollment.course_id 
+                WHERE enrollment.student_id = ?";
+    }
+    
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("i", $user_id);
     $stmt->execute();
@@ -42,13 +52,14 @@
                     $slideIndex = 0;
                     foreach ($courses as $index => $course) {
                         if ($index % 3 == 0) {
-                            if ($index > 0) ?> </div>
-                             <div class="slide">
-                             <?php $slideIndex++;
-                        } ?>
+                            if ($index > 0) echo '</div>';
+                            echo '<div class="slide">';
+                            $slideIndex++;
+                        }
+                    ?>
                             <div class="subject-card">
-                                <h4> <?php echo htmlspecialchars($course['name']); ?> </h4>
-                                <p> <?php echo htmlspecialchars($course['id']); ?> </p>
+                                <h4><?php echo htmlspecialchars($course['name']); ?></h4>
+                                <p><?php echo htmlspecialchars($course['id']); ?></p>
                                 <form action="../backend/setCourse.php" method="post">
                                     <input type="hidden" name="course_id" value="<?php echo htmlspecialchars($course['id']); ?>">
                                     <button type="submit">Go to Course</button>
