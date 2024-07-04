@@ -26,12 +26,12 @@ if (isset($_POST['id']) && isset($_POST['password'])) {
 
     // Check if the ID field is empty
     if (empty($id)) {
-        header("Location: login.php?error=ID is required"); // Redirect to login page with error message
+        header("Location: /pages/login.php?error=ID is required"); // Redirect to login page with error message
         exit();
     }
     // Check if the password field is empty
     else if (empty($password)) {
-        header("Location: login.php?error=Password is required"); // Redirect to login page with error message
+        header("Location: /pages/login.php?error=Password is required"); // Redirect to login page with error message
         exit();
     }
     else {
@@ -63,14 +63,14 @@ if (isset($_POST['id']) && isset($_POST['password'])) {
         }
         else {
             // Redirect to login page with error message for incorrect ID or password
-            header("Location: login.php?error=Incorect ID or password");
+            header("Location: /pages/login.php?error=Incorect ID or password");
             exit();
         }
     }
 }
 else {
     // Redirect to login page if form data is not submitted
-    header("Location: login.php");
+    header("Location: /pages/login.php");
     exit();
 }
 ?>
