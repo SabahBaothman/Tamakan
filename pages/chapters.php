@@ -53,7 +53,7 @@ include('./nav.php');
             <h2 class="pageTitle">Chapters</h2>
             <div class="pageSubtitle">
                 <p><span><?php echo htmlspecialchars($course['name']); ?> / <?php echo htmlspecialchars($course_id); ?></span></p>
-                <form action="goToAddChapter.php" method="post" class="add-chapter-form">
+                <form action="../backend/goToAddChapter.php" method="post" class="add-chapter-form">
                     <input type="hidden" name="course_id" value="<?php echo htmlspecialchars($course_id); ?>">
                     <button type="submit" class="button">Add Chapter</button>
                 </form>

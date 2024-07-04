@@ -1,18 +1,18 @@
 <?php
-session_start();
+    session_start();
 
-include('../db/db_conn.php');
+    include('../db/db_conn.php');
 
-$user_id = $_SESSION['id'];
-$sql = "SELECT id, name FROM course WHERE teacher_id = ?";
-$stmt = $conn->prepare($sql);
-$stmt->bind_param("i", $user_id);
-$stmt->execute();
-$result = $stmt->get_result();
-$courses = $result->fetch_all(MYSQLI_ASSOC);
+    $user_id = $_SESSION['id'];
+    $sql = "SELECT id, name FROM course WHERE teacher_id = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $user_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $courses = $result->fetch_all(MYSQLI_ASSOC);
 
-$stmt->close();
-$conn->close();
+    $stmt->close();
+    $conn->close();
 ?>
 
 <!DOCTYPE html>
@@ -49,7 +49,7 @@ $conn->close();
                             <div class="subject-card">
                                 <h4> <?php echo htmlspecialchars($course['name']); ?> </h4>
                                 <p> <?php echo htmlspecialchars($course['id']); ?> </p>
-                                <form action="setCourse.php" method="post">
+                                <form action="../backend/setCourse.php" method="post">
                                     <input type="hidden" name="course_id" value="<?php echo htmlspecialchars($course['id']); ?>">
                                     <button type="submit">Go to Course</button>
                                 </form>

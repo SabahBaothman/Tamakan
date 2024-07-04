@@ -36,7 +36,7 @@ if (isset($_POST['id']) && isset($_POST['password'])) {
     }
     else {
         // Prepare SQL query to check if the ID and password exist in the database
-        $sql = "SELECT * FROM teacher WHERE id='$id' AND password='$password'";
+        $sql = "SELECT * FROM users WHERE id='$id' AND password='$password'";
         $result = mysqli_query($conn, $sql);
 
         // Check if there is exactly one matching record
@@ -49,6 +49,7 @@ if (isset($_POST['id']) && isset($_POST['password'])) {
 
                 // Store user ID in session variable
                 $_SESSION['id'] = $row['id'];
+                $_SESSION['user_type'] = $row['type'];
 
                 // Redirect to the courses page
                 header("Location: courses.php");

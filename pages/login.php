@@ -16,7 +16,7 @@
     <main class="login-page">
         <section class="login-form">
             <h1>تسجيل دخول جامعة</h1>
-            <form method="post" action="loginLogic.php">
+            <form method="post" action="../backend/loginBackend.php">
                 <!-- ID -->
                 <label for="id">Your ID</label>
                 <input type="text" id="id" name="id" placeholder="236975" required>
