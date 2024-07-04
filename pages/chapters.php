@@ -1,3 +1,36 @@
+<?php 
+session_start();
+
+if (!isset($_SESSION['id'])) {
+    header("Location: login.php");
+    exit();
+}
+
+include('../db/db_conn.php');
+
+$user_id = $_SESSION['id'];
+$course_id = $_SESSION['course_id'];
+
+// Fetch course name
+$sql_course = "SELECT name FROM course WHERE id = ?";
+$stmt_course = $conn->prepare($sql_course);
+$stmt_course->bind_param("i", $course_id);
+$stmt_course->execute();
+$result_course = $stmt_course->get_result();
+$course = $result_course->fetch_assoc();
+
+// Fetch chapters
+$sql_chapters = "SELECT number, title, file FROM chapter WHERE course_id = ?";
+$stmt_chapters = $conn->prepare($sql_chapters);
+$stmt_chapters->bind_param("i", $course_id);
+$stmt_chapters->execute();
+$result_chapters = $stmt_chapters->get_result();
+$chapters = $result_chapters->fetch_all(MYSQLI_ASSOC);
+
+$stmt_course->close();
+$stmt_chapters->close();
+$conn->close();
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -19,41 +52,31 @@ include('./nav.php');
         <div class="header">
             <h2 class="pageTitle">Chapters</h2>
             <div class="pageSubtitle">
-                <p><span>Database / CPCS-241</span></p>
-                <button type="button" class="button">Add Chapter</button>
+                <p><span><?php echo htmlspecialchars($course['name']); ?> / <?php echo htmlspecialchars($course_id); ?></span></p>
+                <form action="goToAddChapter.php" method="post" class="add-chapter-form">
+                    <input type="hidden" name="course_id" value="<?php echo htmlspecialchars($course_id); ?>">
+                    <button type="submit" class="button">Add Chapter</button>
+                </form>
             </div>
         </div>
 
         <!-- CHAPTERS -->
         <div id="chapters">
-            <a href="" class="chapterCard">
-                <h1>CH1</h1>
-                <div>
-                    <p>Database and Database users</p>
+            <?php if (count($chapters) > 0): ?>
+                <?php foreach ($chapters as $chapter): ?>
+                    <a href="<?php echo htmlspecialchars($chapter['file']); ?>" class="chapterCard" target="_blank">
+                        <h1>CH<?php echo htmlspecialchars($chapter['number']); ?></h1>
+                        <div>
+                            <p><?php echo htmlspecialchars($chapter['title']); ?></p>
+                        </div>
+                    </a>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <div class="no-content">
+                    <img src="../images/noContent.png" alt="No Content" width="400">
+                    <h2>No Content Found</h2>
                 </div>
-            </a>
-
-            <a href="" class="chapterCard">
-                <h1>CH1</h1>
-                <div>
-                    <p>Database and Database users</p>
-                </div>
-            </a>
-
-            <a href="" class="chapterCard">
-                <h1>CH1</h1>
-                <div>
-                    <p>Database and Database users</p>
-                </div>
-            </a>
-
-            <a href="" class="chapterCard">
-                <h1>CH1</h1>
-                <div>
-                    <p>Database and Database users</p>
-                </div>
-            </a>
-
+            <?php endif; ?>
         </div>
 
     </div>

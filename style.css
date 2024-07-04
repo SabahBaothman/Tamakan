@@ -369,6 +369,8 @@ margin-top: -6.7%;
     border: 5px solid var(--background);
 }
 
+
+
 .pageSubtitle::after {
     content: '';
     position: absolute;

@@ -1,11 +1,6 @@
 <?php
 session_start();
 
-// if (!isset($_SESSION['user_id'])) {
-//     header("Location: login.php");
-//     exit();
-// }
-
 include('../db/db_conn.php');
 
 $user_id = $_SESSION['id'];
@@ -30,8 +25,6 @@ $conn->close();
 </head>
 <?php include('nav.php'); ?>
 <body>
-    
-    
     <!-- Main Container -->
     <div class="paddContainer">
         <!-- Header -->
@@ -56,11 +49,13 @@ $conn->close();
                             <div class="subject-card">
                                 <h4> <?php echo htmlspecialchars($course['name']); ?> </h4>
                                 <p> <?php echo htmlspecialchars($course['id']); ?> </p>
-                                <button>Go to Course</button>
+                                <form action="setCourse.php" method="post">
+                                    <input type="hidden" name="course_id" value="<?php echo htmlspecialchars($course['id']); ?>">
+                                    <button type="submit">Go to Course</button>
+                                </form>
                             </div>
-                <?php } ?>
-                        </div>
-                    
+                    <?php } ?>
+                    </div>
                 </div>
 
                 <a class="prev" onclick="changeSlide(-1)">&#10094;</a>
