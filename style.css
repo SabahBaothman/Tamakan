@@ -386,7 +386,6 @@ margin-top: -6.7%;
 }
 
 .chapterCard {
-    text-decoration: none;
     background: url("images/background.png");
     background-size: cover;
     border-radius: 10px;
@@ -398,6 +397,10 @@ margin-top: -6.7%;
     min-height: 29%; /* to make them visually consistent in height */
     margin-bottom: 6%;
     margin-right: 6.5%;
+}
+
+.chapterCard a {
+    text-decoration: none;
 }
 
 .chapterCard:nth-child(3n) {

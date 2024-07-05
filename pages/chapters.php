@@ -66,12 +66,17 @@ include('./nav.php');
         <?php if (count($chapters) > 0): ?>
         <div id="chapters">
                 <?php foreach ($chapters as $chapter): ?>
-                    <a href="<?php echo htmlspecialchars($chapter['file']); ?>" class="chapterCard" target="_blank">
-                        <h1>CH<?php echo htmlspecialchars($chapter['number']); ?></h1>
-                        <div>
-                            <p><?php echo htmlspecialchars($chapter['title']); ?></p>
-                        </div>
-                    </a>
+                    <form action="lessons.php" method="POST" class="chapterCard">
+                        <input type="hidden" name="course_id" value="<?php echo htmlspecialchars($course_id); ?>">
+                        <input type="hidden" name="chapter_title" value="<?php echo htmlspecialchars($chapter['title']); ?>">
+                        <input type="hidden" name="chapter_number" value="<?php echo htmlspecialchars($chapter['number']); ?>">
+                        <a href="#" onclick="this.closest('form').submit(); return false;">
+                            <h1>CH<?php echo htmlspecialchars($chapter['number']); ?></h1>
+                            <div>
+                                <p><?php echo htmlspecialchars($chapter['title']); ?></p>
+                            </div>
+                        </a>
+                    </form>
                 <?php endforeach; ?>
         </div>
         <?php else: ?>
