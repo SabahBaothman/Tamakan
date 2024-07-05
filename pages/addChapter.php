@@ -6,14 +6,6 @@ if (!isset($_SESSION['id'])) {
     exit();
 }
 
-// $user_id = isset($_GET['user_id']) ? $_GET['user_id'] : null;
-// $course_id = isset($_GET['course_id']) ? $_GET['course_id'] : null;
-
-// if (!$user_id || !$course_id) {
-//     header("Location: error.php"); // Redirect to an error page or display an error message
-//     exit();
-// }
-
 include('../db/db_conn.php');
 
 $user_id = $_SESSION['id'];
@@ -29,7 +21,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     for ($i = 1; $i <= $main_lessons; $i++) {
         $lessons[] = [
             'number' => $i,
-            'title' => $_POST['lesson_title_' . $i]
+            'title' => $_POST['lesson_title_' . $i],
+            'firstSlide' => $_POST['slides_from_' . $i],
+            'lastSlide' => $_POST['slides_to_' . $i]
         ];
         $llos[] = [
             'lesson_number' => $i,
@@ -44,23 +38,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     move_uploaded_file($file['tmp_name'], $file_path);
 
     // Insert chapter into the database
-    $stmt = $conn->prepare("INSERT INTO chapter (number, title, course_id, file) VALUES (?, ?, ?, ?)");
-    $stmt->bind_param("isis", $chapter_number, $chapter_title, $course_id, $file_path);
+    $stmt = $conn->prepare("INSERT INTO chapter (number, title, course_id, teacher_id, file) VALUES (?, ?, ?, ?, ?)");
+    $stmt->bind_param("issss", $chapter_number, $chapter_title, $course_id, $user_id, $file_path);
     $stmt->execute();
     $stmt->close();
 
     // Insert lessons into the database
     foreach ($lessons as $lesson) {
-        $stmt = $conn->prepare("INSERT INTO lessons (chapter_number, course_id, number, title) VALUES (?, ?, ?, ?)");
-        $stmt->bind_param("isis", $chapter_number, $course_id, $lesson['number'], $lesson['title']);
+        $stmt = $conn->prepare("INSERT INTO lessons (chapter_number, course_id, teacher_id, number, title, firstSlide, lastSlide) VALUES (?, ?, ?, ?, ?, ?, ?)");
+        $stmt->bind_param("isiisii", $chapter_number, $course_id, $user_id, $lesson['number'], $lesson['title'], $lesson['firstSlide'], $lesson['lastSlide']);
         $stmt->execute();
         $stmt->close();
     }
 
     // Insert LLOs into the database
     foreach ($llos as $llo) {
-        $stmt = $conn->prepare("INSERT INTO llos (course_id, chapter_number, lesson_number, llos_content) VALUES (?, ?, ?, ?)");
-        $stmt->bind_param("iiis", $course_id, $chapter_number, $llo['lesson_number'], $llo['llos_content']);
+        $stmt = $conn->prepare("INSERT INTO llos (course_id, chapter_number, lesson_number, teacher_id, llos_content) VALUES (?, ?, ?, ?, ?)");
+        $stmt->bind_param("siiis", $course_id, $chapter_number, $llo['lesson_number'], $user_id, $llo['llos_content']);
         $stmt->execute();
         $stmt->close();
     }
@@ -69,6 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     exit();
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -144,101 +139,83 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     </main>
     
     <script>
-        // Add event listener to the 'Chapter Main Lessons' input field
         document.getElementById('main-lessons').addEventListener('input', function() {
-    // Parse the number of lessons entered by the user
     const numLessons = parseInt(this.value);
-    // Get the container for the lessons
     const addLlos = document.getElementById('add-llos');
-    // Get the current number of lesson input blocks
     const currentLessonCount = addLlos.children.length / 3;
 
-    // Check if the entered value is a valid number and greater than the current number of lessons
     if (!isNaN(numLessons) && numLessons > currentLessonCount) {
-        // Loop to create input fields for the additional lessons
         for (let i = currentLessonCount + 1; i <= numLessons; i++) {
-            // Create a div for lesson title input block
             const lessonTitleDiv = document.createElement('div');
             lessonTitleDiv.classList.add('input-block');
 
-            // Create label for lesson title
             const lessonTitleLabel = document.createElement('label');
             lessonTitleLabel.setAttribute('for', 'lesson-title-' + i);
             lessonTitleLabel.textContent = 'Lesson ' + i + ':';
 
-            // Create input field for lesson title
             const lessonTitleInput = document.createElement('input');
             lessonTitleInput.setAttribute('type', 'text');
             lessonTitleInput.setAttribute('id', 'lesson-title-' + i);
             lessonTitleInput.setAttribute('name', 'lesson_title_' + i);
             lessonTitleInput.setAttribute('placeholder', 'Enter Lesson ' + i + ' Title');
 
-            // Append label and input to the lesson title div
             lessonTitleDiv.appendChild(lessonTitleLabel);
             lessonTitleDiv.appendChild(lessonTitleInput);
 
-            // Append lesson title div to the container
             addLlos.appendChild(lessonTitleDiv);
 
-            // Create a div for Slides Number input block
             const slidesDiv = document.createElement('div');
             slidesDiv.classList.add('input-block');
 
-            // Create label for Slides Number
             const slidesLabel = document.createElement('label');
             slidesLabel.setAttribute('for', 'slides-number-' + i);
             slidesLabel.textContent = 'Slides Number:';
 
-            // Create input fields for Slides Number
             const slidesBlockDiv = document.createElement('div');
-                    slidesBlockDiv.classList.add('slides-block');
+            slidesBlockDiv.classList.add('slides-block');
 
-                    const slidesFromInput = document.createElement('input');
-                    slidesFromInput.setAttribute('type', 'number');
-                    slidesFromInput.setAttribute('id', 'slides-from-' + i);
-                    slidesFromInput.setAttribute('name', 'slides_from_' + i);
-                    slidesFromInput.setAttribute('placeholder', 'From');
-                    slidesFromInput.classList.add('slides-input');
+            const slidesFromInput = document.createElement('input');
+            slidesFromInput.setAttribute('type', 'number');
+            slidesFromInput.setAttribute('id', 'slides-from-' + i);
+            slidesFromInput.setAttribute('name', 'slides_from_' + i);
+            slidesFromInput.setAttribute('placeholder', 'From');
+            slidesFromInput.classList.add('slides-input');
 
-                    const slidesToInput = document.createElement('input');
-                    slidesToInput.setAttribute('type', 'number');
-                    slidesToInput.setAttribute('id', 'slides-to-' + i);
-                    slidesToInput.setAttribute('name', 'slides_to_' + i);
-                    slidesToInput.setAttribute('placeholder', 'To');
-                    slidesToInput.classList.add('slides-input');
+            const slidesToInput = document.createElement('input');
+            slidesToInput.setAttribute('type', 'number');
+            slidesToInput.setAttribute('id', 'slides-to-' + i);
+            slidesToInput.setAttribute('name', 'slides_to_' + i);
+            slidesToInput.setAttribute('placeholder', 'To');
+            slidesToInput.classList.add('slides-input');
 
-                    slidesBlockDiv.appendChild(slidesFromInput);
-                    slidesBlockDiv.appendChild(slidesToInput);
+            slidesBlockDiv.appendChild(slidesFromInput);
+            slidesBlockDiv.appendChild(slidesToInput);
 
-                    slidesDiv.appendChild(slidesLabel);
-                    slidesDiv.appendChild(slidesBlockDiv);
-                    addLlos.appendChild(slidesDiv);
+            slidesDiv.appendChild(slidesLabel);
+            slidesDiv.appendChild(slidesBlockDiv);
+            addLlos.appendChild(slidesDiv);
 
-            // Create a div for LLO input block
             const lloDiv = document.createElement('div');
             lloDiv.classList.add('input-block');
 
-            // Create label for LLO
             const lloLabel = document.createElement('label');
             lloLabel.setAttribute('for', 'llo-' + i);
             lloLabel.textContent = 'Lesson Learning Outcomes (LLOs) ' + i + ':';
 
-            // Create input field for LLO
             const lloInput = document.createElement('input');
             lloInput.setAttribute('type', 'text');
             lloInput.setAttribute('id', 'llo-' + i);
             lloInput.setAttribute('name', 'llo_' + i);
             lloInput.setAttribute('placeholder', 'Add LLOs for Lesson ' + i);
 
-            // Append label and input to the LLO div
             lloDiv.appendChild(lloLabel);
             lloDiv.appendChild(lloInput);
 
-            // Append LLO div to the container
             addLlos.appendChild(lloDiv);
         }
     }
 });
+
 
     </script>
 </body>
