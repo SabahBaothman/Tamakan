@@ -39,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     // Insert chapter into the database
     $stmt = $conn->prepare("INSERT INTO chapter (number, title, course_id, teacher_id, file) VALUES (?, ?, ?, ?, ?)");
-    $stmt->bind_param("issss", $chapter_number, $chapter_title, $course_id, $user_id, $file_path);
+    $stmt->bind_param("issis", $chapter_number, $chapter_title, $course_id, $user_id, $file_path);
     $stmt->execute();
     $stmt->close();
 
