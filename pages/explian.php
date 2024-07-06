@@ -79,11 +79,14 @@ include('nav.php');
         </div>
     <div id="explin_container">
         <div id="pdf-container">
-            <canvas id="pdf-canvas"></canvas>
+            <!-- <canvas id="pdf-canvas"></canvas> -->
             <div id="navigation-controls">
                 <button id="prev-page"><i class="fas fa-arrow-left"></i></button>
-                <span id="page-num"></span> / <span id="page-count"></span>
+                <canvas id="pdf-canvas"></canvas>
                 <button id="next-page"><i class="fas fa-arrow-right"></i></button>
+            </div>
+            <div class="page-count">
+            <span id="page-num"></span> / <span id="page-count"></span>
             </div>
             <div class="recording-controls">
                 <button id="toggleRecord"><i class="fas fa-microphone-slash"></i></button>
@@ -94,72 +97,86 @@ include('nav.php');
         </div>
     </div>
     <script>
-        var url = "<?php echo htmlspecialchars($pdf_file); ?>"; // URL to the PDF file
-        var firstSlide = <?php echo $first_slide; ?>;
-        var lastSlide = <?php echo $last_slide; ?>;
+document.addEventListener('DOMContentLoaded', function() {
+    var url = "<?php echo htmlspecialchars($pdf_file); ?>"; // URL to the PDF file
+    var firstSlide = <?php echo $first_slide; ?>;
+    var lastSlide = <?php echo $last_slide; ?>;
 
-        var pdfDoc = null,
-            pageNum = firstSlide,
-            pageRendering = false,
-            pageNumPending = null,
-            scale = 1.5,
-            canvas = document.getElementById('pdf-canvas'),
-            ctx = canvas.getContext('2d');
+    var pdfDoc = null,
+        pageNum = firstSlide,
+        pageRendering = false,
+        pageNumPending = null,
+        scale = 1.5,
+        canvas = document.getElementById('pdf-canvas'),
+        ctx = canvas.getContext('2d');
 
-        pdfjsLib.getDocument(url).promise.then(function (pdfDoc_) {
-            pdfDoc = pdfDoc_;
-            document.getElementById('page-count').textContent = (lastSlide - firstSlide + 1);
-            renderPage(pageNum);
-        });
+    console.log('Document loaded');
+    console.log('PDF URL:', url);
+    console.log('First Slide:', firstSlide);
+    console.log('Last Slide:', lastSlide);
 
-        function renderPage(num) {
-            pageRendering = true;
-            pdfDoc.getPage(num).then(function (page) {
-                var viewport = page.getViewport({ scale: scale });
-                canvas.height = viewport.height;
-                canvas.width = viewport.width;
+    pdfjsLib.getDocument(url).promise.then(function (pdfDoc_) {
+        pdfDoc = pdfDoc_;
+        console.log('PDF loaded');
+        document.getElementById('page-count').textContent = (lastSlide - firstSlide + 1);
+        renderPage(pageNum);
+    }).catch(function(error) {
+        console.error('Error loading PDF:', error);
+    });
 
-                var renderContext = {
-                    canvasContext: ctx,
-                    viewport: viewport
-                };
-                var renderTask = page.render(renderContext);
+    function renderPage(num) {
+        console.log('Rendering page:', num);
+        pageRendering = true;
+        pdfDoc.getPage(num).then(function (page) {
+            var viewport = page.getViewport({ scale: scale });
+            canvas.height = viewport.height;
+            canvas.width = viewport.width;
 
-                renderTask.promise.then(function () {
-                    pageRendering = false;
-                    if (pageNumPending !== null) {
-                        renderPage(pageNumPending);
-                        pageNumPending = null;
-                    }
-                });
+            var renderContext = {
+                canvasContext: ctx,
+                viewport: viewport
+            };
+            var renderTask = page.render(renderContext);
+
+            renderTask.promise.then(function () {
+                pageRendering = false;
+                console.log('Page rendered:', num);
+                if (pageNumPending !== null) {
+                    renderPage(pageNumPending);
+                    pageNumPending = null;
+                }
             });
-
-            document.getElementById('page-num').textContent = (num - firstSlide + 1);
-        }
-
-        function queueRenderPage(num) {
-            if (pageRendering) {
-                pageNumPending = num;
-            } else {
-                renderPage(num);
-            }
-        }
-
-        document.getElementById('prev-page').addEventListener('click', function () {
-            if (pageNum <= firstSlide) {
-                return;
-            }
-            pageNum--;
-            queueRenderPage(pageNum);
+        }).catch(function(error) {
+            console.error('Error rendering page:', error);
         });
 
-        document.getElementById('next-page').addEventListener('click', function () {
-            if (pageNum >= lastSlide) {
-                return;
-            }
-            pageNum++;
-            queueRenderPage(pageNum);
-        });
+        document.getElementById('page-num').textContent = (num - firstSlide + 1);
+    }
+
+    function queueRenderPage(num) {
+        if (pageRendering) {
+            pageNumPending = num;
+        } else {
+            renderPage(num);
+        }
+    }
+
+    document.getElementById('prev-page').addEventListener('click', function () {
+        if (pageNum <= firstSlide) {
+            return;
+        }
+        pageNum--;
+        queueRenderPage(pageNum);
+    });
+
+    document.getElementById('next-page').addEventListener('click', function () {
+        if (pageNum >= lastSlide) {
+            return;
+        }
+        pageNum++;
+        queueRenderPage(pageNum);
+    });
+});
     </script>
     <script src="../VoiceModel/input.js"></script>
 </body>
