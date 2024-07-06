@@ -1,4 +1,4 @@
-<?php 
+<?php
 session_start();
 
 if (!isset($_SESSION['id'])) {
@@ -10,6 +10,7 @@ include('../db/db_conn.php');
 
 $user_id = $_SESSION['id'];
 $course_id = $_SESSION['course_id'];
+$user_type = $_SESSION['user_type'];
 
 // Fetch course name
 $sql_course = "SELECT name FROM course WHERE id = ?";
@@ -18,22 +19,33 @@ $stmt_course->bind_param("i", $course_id);
 $stmt_course->execute();
 $result_course = $stmt_course->get_result();
 $course = $result_course->fetch_assoc();
+$stmt_course->close();
 
-// Fetch chapters
-$sql_chapters = "SELECT number, title, file FROM chapter WHERE course_id = ?";
-$stmt_chapters = $conn->prepare($sql_chapters);
-$stmt_chapters->bind_param("i", $course_id);
+// Fetch chapters based on user type
+if ($user_type == 't') {
+    $sql_chapters = "SELECT number, title, file FROM chapter WHERE course_id = ? AND teacher_id = ?";
+    $stmt_chapters = $conn->prepare($sql_chapters);
+    $stmt_chapters->bind_param("ii", $course_id, $user_id);
+} else {
+    
+    $sql_chapters = "SELECT ch.number, ch.title, ch.file 
+                     FROM chapter ch
+                     JOIN enrollment en ON ch.course_id = en.course_id
+                     WHERE ch.course_id = ? AND en.student_id = ? AND ch.teacher_id = en.teacher_id";
+    $stmt_chapters = $conn->prepare($sql_chapters);
+    $stmt_chapters->bind_param("ii", $course_id, $user_id);
+}
+
 $stmt_chapters->execute();
 $result_chapters = $stmt_chapters->get_result();
 $chapters = $result_chapters->fetch_all(MYSQLI_ASSOC);
 
-$stmt_course->close();
 $stmt_chapters->close();
 $conn->close();
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -41,9 +53,7 @@ $conn->close();
     <title>Chapters</title>
 </head>
 
-<?php
-include('./nav.php');
-?>
+<?php include('./nav.php'); ?>
 
 <body>
     <div class="paddContainer">
@@ -53,7 +63,7 @@ include('./nav.php');
             <h2 class="pageTitle">Chapters</h2>
             <div class="pageSubtitle">
                 <p><span><?php echo htmlspecialchars($course['name']); ?> / <?php echo htmlspecialchars($course_id); ?></span></p>
-                <?php   if($_SESSION['user_type'] == 't'):?>
+                <?php if ($user_type == 't'): ?>
                     <form action="../backend/goToAddChapter.php" method="post" class="chaptersBtn">
                         <input type="hidden" name="course_id" value="<?php echo htmlspecialchars($course_id); ?>">
                         <button type="submit" class="button">Add Chapter</button>
@@ -64,7 +74,7 @@ include('./nav.php');
 
         <!-- CHAPTERS -->
         <?php if (count($chapters) > 0): ?>
-        <div id="chapters">
+            <div id="chapters">
                 <?php foreach ($chapters as $chapter): ?>
                     <form action="lessons.php" method="POST" class="chapterCard">
                         <input type="hidden" name="course_id" value="<?php echo htmlspecialchars($course_id); ?>">
@@ -78,15 +88,14 @@ include('./nav.php');
                         </a>
                     </form>
                 <?php endforeach; ?>
-        </div>
+            </div>
         <?php else: ?>
-                <div class="no-content">
-                    <img src="../images/noContent.png" alt="No Content" width="400">
-                    <h2>No Content Found</h2>
-                </div>
-            <?php endif; ?>
+            <div class="no-content">
+                <img src="../images/noContent.png" alt="No Content" width="400">
+                <h2>No Content Found</h2>
+            </div>
+        <?php endif; ?>
 
     </div>
 </body>
-
 </html>
