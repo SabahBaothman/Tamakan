@@ -1,7 +1,61 @@
+<?php
+
+include('../db/db_conn.php');
+
+$pdf_file = ''; // Initialize an empty variable
+$lessons = []; // Initialize an empty array for lessons
+
+if (isset($_POST['teacher_id'], $_POST['course_id'], $_POST['chapter_number'], $_POST['lesson_number'])) {
+    $teacher_id = $_POST['teacher_id'];
+    $course_id = $_POST['course_id'];
+    $chapter_number = $_POST['chapter_number'];
+    $lesson_number = $_POST['lesson_number'];
+
+    // First query to fetch the PDF path from the chapters table
+    $query1 = "SELECT file,title FROM chapter WHERE teacher_id = ? AND course_id = ? AND number = ?";
+    $stmt1 = mysqli_prepare($conn, $query1);
+    mysqli_stmt_bind_param($stmt1, "iii", $teacher_id, $course_id, $chapter_number);
+    mysqli_stmt_execute($stmt1);
+    $result1 = mysqli_stmt_get_result($stmt1);
+    if ($row1 = mysqli_fetch_assoc($result1)) {
+        $pdf_file = $row1['file'];
+        $chapter_name = $row1['title'];
+    } else {
+        die("Chapter not found.");
+    }
+    // Second query to fetch the lessons from the lessons table
+    $query2 = "SELECT title,firstSlide,lastSlide FROM lessons WHERE teacher_id = ? AND course_id = ? AND chapter_number = ?";
+    $stmt2 = mysqli_prepare($conn, $query2);
+    mysqli_stmt_bind_param($stmt2, "iii", $teacher_id, $course_id, $chapter_number);
+    mysqli_stmt_execute($stmt2);
+    $result2 = mysqli_stmt_get_result($stmt2);
+
+    while ($row2 = mysqli_fetch_assoc($result2)) {
+        $lessons[] = $row2['title'];
+    }
+// Third query to fetch the first and last slide numbers from the lessons table
+$query3 = "SELECT firstSlide, lastSlide FROM lessons WHERE teacher_id = ? AND course_id = ? AND chapter_number = ? AND number = ?";
+$stmt3 = mysqli_prepare($conn, $query3);
+mysqli_stmt_bind_param($stmt3, "iiii", $teacher_id, $course_id, $chapter_number, $lesson_number);
+mysqli_stmt_execute($stmt3);
+$result3 = mysqli_stmt_get_result($stmt3);
+
+if ($row3 = mysqli_fetch_assoc($result3)) {
+    $first_slide = $row3['firstSlide'];
+    $last_slide = $row3['lastSlide'];
+} else {
+    die("Lesson not found.");
+}
+} else {
+die("Invalid request.");
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Explian Page</title>
@@ -16,11 +70,11 @@ include('nav.php');
 
 <body>
     <div id="lesson_menu">
-        <h5>Database and Database users</h5>
+    <h5><?php echo htmlspecialchars($chapter_name); ?></h5> <!-- Display the chapter name -->
         <ul>
-            <li><a href="#item1">Introduction to Databases</a></li>
-            <li><a href="#item2">Component of Database Systems</a></li>
-            <li><a href="#item3">Introduction to Databases</a></li>
+            <?php foreach ($lessons as $lesson): ?>
+                <li><a href="#"><?php echo htmlspecialchars($lesson); ?></a></li>
+            <?php endforeach; ?>
         </ul>
         </div>
     <div id="explin_container">
@@ -32,18 +86,20 @@ include('nav.php');
                 <button id="next-page"><i class="fas fa-arrow-right"></i></button>
             </div>
             <div class="recording-controls">
-        <button id="toggleRecord"><i class="fas fa-microphone-slash"></i></button>
-      </div>
-      <div class="submit-button">
-      <button type="button" class="button">Submit</button>
-      </div>
+                <button id="toggleRecord"><i class="fas fa-microphone-slash"></i></button>
+            </div>
+            <div class="submit-button">
+                <button type="button" class="button">Submit</button>
+            </div>
         </div>
     </div>
     <script>
-        var url = '../../CPCS433_Deep_learning_Network_Convolutional_Neural_Networks.pdf'; // URL to the PDF file
+        var url = "<?php echo htmlspecialchars($pdf_file); ?>"; // URL to the PDF file
+        var firstSlide = <?php echo $first_slide; ?>;
+        var lastSlide = <?php echo $last_slide; ?>;
 
         var pdfDoc = null,
-            pageNum = 1,
+            pageNum = firstSlide,
             pageRendering = false,
             pageNumPending = null,
             scale = 1.5,
@@ -52,7 +108,7 @@ include('nav.php');
 
         pdfjsLib.getDocument(url).promise.then(function (pdfDoc_) {
             pdfDoc = pdfDoc_;
-            document.getElementById('page-count').textContent = pdfDoc.numPages;
+            document.getElementById('page-count').textContent = (lastSlide - firstSlide + 1);
             renderPage(pageNum);
         });
 
@@ -78,7 +134,7 @@ include('nav.php');
                 });
             });
 
-            document.getElementById('page-num').textContent = num;
+            document.getElementById('page-num').textContent = (num - firstSlide + 1);
         }
 
         function queueRenderPage(num) {
@@ -90,7 +146,7 @@ include('nav.php');
         }
 
         document.getElementById('prev-page').addEventListener('click', function () {
-            if (pageNum <= 1) {
+            if (pageNum <= firstSlide) {
                 return;
             }
             pageNum--;
@@ -98,13 +154,16 @@ include('nav.php');
         });
 
         document.getElementById('next-page').addEventListener('click', function () {
-            if (pageNum >= pdfDoc.numPages) {
+            if (pageNum >= lastSlide) {
                 return;
             }
             pageNum++;
             queueRenderPage(pageNum);
         });
     </script>
-        <script src="../VoiceModel/input.js"></script>
+    <script src="../VoiceModel/input.js"></script>
 </body>
 </html>
+<?php
+$conn->close();
+?>
