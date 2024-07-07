@@ -87,6 +87,29 @@ nav {
     }
 }
 
+nav a {
+    color: white;
+    text-decoration: none;
+    font-size: 15px;
+    padding: 10px;
+}
+
+nav span{
+    color: var(--secondary);
+    text-decoration: none;
+    font-size: 15px;
+    padding: 10px;
+}
+
+.vertical-bar{
+    color: white;
+    font-size: 15px;
+    margin: 0px -5px;
+    /* padding: 10px; */
+}
+/* -----------------------------
+
+
 /* ------------ EXPLIN PAGE ------------ */
 /* Menu styling */
 #lesson_menu {
