@@ -1,5 +1,4 @@
 <?php
-session_start();
 include('../db/db_conn.php');
 
 // Fetch the user's name from the database
@@ -26,11 +25,15 @@ $conn->close();
     <!-- Navigation bar -->
     <nav>
         <div class="nav-left">
-            <a href="/index.php" id="nav-logo-holder">
+            <a href="courses.php" id="nav-logo-holder">
                 <img id="logo" src="../images/logo.png" alt="Logo" width="80">
             </a>
-            <a href="/index.php" id="nav-home-link">Home</a>
+            <a href="courses.php" id="nav-home-link">Home</a>
             <?php if ($user_type == 's'): ?>
+                <span class="vertical-bar">|</span>
+                <a href="dashboard.php" id="nav-scores-link">Dashboard</a>
+            <?php endif; ?>
+            <?php if ($user_type == 't'): ?>
                 <span class="vertical-bar">|</span>
                 <a href="scores.php" id="nav-scores-link">Scores</a>
             <?php endif; ?>
