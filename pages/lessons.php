@@ -91,7 +91,6 @@ include('./nav.php');
         <!-- LESSONS -->
         <div>
             <?php
-            $xxx = 1;
             while ($lesson = $lessons -> fetch_assoc()){
                 if($user_type=='s'){
                     $done = isLessonExplained($conn, $user_id, $course_id, $chapter_number, $lesson['number']);
@@ -117,14 +116,26 @@ include('./nav.php');
                     <?php
                     }
                     ?>
-                    <?php $buttonTitle = $user_type=='t'? 'View' : ($done==1? 'Re-Explain' : 'Explain') ?>
-                    <form action="explian.php" method="POST" style="display: contents">
-                        <input type="hidden" name="course_id" value="<?php echo htmlspecialchars($course_id) ?>">
-                        <input type="hidden" name="chapter_number" value="<?php echo htmlspecialchars($chapter_number) ?>">
-                        <input type="hidden" name="lesson_number" value="<?php echo htmlspecialchars($lesson['number']) ?>">
-                        <input type="hidden" name="teacher_id" value="<?php echo htmlspecialchars($lesson['teacher_id']) ?>">
-                        <button type="button" class="button" onclick="this.closest('form').submit(); return false;"><?= $buttonTitle ?></button>
-                    </form>
+
+                    <?php if($user_type=='s'){ ?>
+                        <?php $buttonTitle = $done == 1 ? 'Re-Explain' : 'Explain'; ?>
+                        <form action="explian.php" method="POST" style="display: contents">
+                            <input type="hidden" name="course_id" value="<?php echo htmlspecialchars($course_id) ?>">
+                            <input type="hidden" name="chapter_number" value="<?php echo htmlspecialchars($chapter_number) ?>">
+                            <input type="hidden" name="lesson_number" value="<?php echo htmlspecialchars($lesson['number']) ?>">
+                            <input type="hidden" name="teacher_id" value="<?php echo htmlspecialchars($lesson['teacher_id']) ?>">
+                            <button type="button" class="button" onclick="this.closest('form').submit(); return false;"><?= $buttonTitle ?></button>
+                        </form>
+                    <?php } else { ?>
+                        <?php $buttonTitle = 'Scores'; ?>
+                        <form action="studScores.php" method="POST" style="display: contents">
+                            <input type="hidden" name="course_id" value="<?php echo htmlspecialchars($course_id) ?>">
+                            <input type="hidden" name="chapter_number" value="<?php echo htmlspecialchars($chapter_number) ?>">
+                            <input type="hidden" name="lesson_title" value="<?php echo htmlspecialchars($lesson['title']) ?>">
+                            <input type="hidden" name="lesson_number" value="<?php echo htmlspecialchars($lesson['number']) ?>">
+                            <button type="button" class="button" onclick="this.closest('form').submit(); return false;"><?= $buttonTitle ?></button>
+                        </form>
+                    <?php } ?>
                 </div>
             </div>
             <?php } ?>
