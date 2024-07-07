@@ -1,30 +1,3 @@
-<?php
-session_start();
-
-include('../db/db_conn.php');
-
-$user_id = $_SESSION['id'];
-
-if ($_SESSION['user_type'] == 't') {
-    // If the user is a teacher
-    $sql = "SELECT id, name FROM course WHERE teacher_id = ?";
-} else {
-    // If the user is a student
-    $sql = "SELECT DISTINCT course.id, course.name 
-            FROM course 
-            JOIN enrollment ON course.id = enrollment.course_id 
-            WHERE enrollment.student_id = ? AND course.teacher_id = enrollment.teacher_id";
-}
-
-$stmt = $conn->prepare($sql);
-$stmt->bind_param("i", $user_id);
-$stmt->execute();
-$result = $stmt->get_result();
-$courses = $result->fetch_all(MYSQLI_ASSOC);
-
-$stmt->close();
-$conn->close();
-?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -33,7 +6,10 @@ $conn->close();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Your Subjects</title>
     <link rel="stylesheet" href="../style.css">
+    <script src="../javascript/courses.js" defer></script>
 </head>
+
+<?php include('../backend/fetchCourses.php'); ?>
 <?php include('nav.php'); ?>
 <body>
     <!-- Main Container -->
@@ -87,37 +63,5 @@ $conn->close();
         <?php endif; ?>
     </div>
 
-    <script>
-        let slideIndex = 1;
-        showSlides(slideIndex);
-
-        function changeSlide(n) {
-            showSlides(slideIndex += n);
-        }
-
-        function currentSlide(n) {
-            showSlides(slideIndex = n);
-        }
-
-        function showSlides(n) {
-            let slides = document.getElementsByClassName("slide");
-            let dots = document.getElementsByClassName("dot");
-
-            if (n > slides.length) slideIndex = 1;
-            if (n < 1) slideIndex = slides.length;
-
-            for (let i = 0; i < slides.length; i++) {
-                slides[i].style.display = "none";
-            }
-            for (let i = 0; i < dots.length; i++) {
-                dots[i].className = dots[i].className.replace(" active", "");
-            }
-
-            if (slides.length > 0) {
-                slides[slideIndex - 1].style.display = "flex";
-                dots[slideIndex - 1].className += " active";
-            }
-        }
-    </script>
 </body>
 </html>
