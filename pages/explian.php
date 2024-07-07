@@ -33,21 +33,21 @@ if (isset($_POST['teacher_id'], $_POST['course_id'], $_POST['chapter_number'], $
     while ($row2 = mysqli_fetch_assoc($result2)) {
         $lessons[] = $row2['title'];
     }
-// Third query to fetch the first and last slide numbers from the lessons table
-$query3 = "SELECT firstSlide, lastSlide FROM lessons WHERE teacher_id = ? AND course_id = ? AND chapter_number = ? AND number = ?";
-$stmt3 = mysqli_prepare($conn, $query3);
-mysqli_stmt_bind_param($stmt3, "iiii", $teacher_id, $course_id, $chapter_number, $lesson_number);
-mysqli_stmt_execute($stmt3);
-$result3 = mysqli_stmt_get_result($stmt3);
+    // Third query to fetch the first and last slide numbers from the lessons table
+    $query3 = "SELECT firstSlide, lastSlide FROM lessons WHERE teacher_id = ? AND course_id = ? AND chapter_number = ? AND number = ?";
+    $stmt3 = mysqli_prepare($conn, $query3);
+    mysqli_stmt_bind_param($stmt3, "iiii", $teacher_id, $course_id, $chapter_number, $lesson_number);
+    mysqli_stmt_execute($stmt3);
+    $result3 = mysqli_stmt_get_result($stmt3);
 
-if ($row3 = mysqli_fetch_assoc($result3)) {
-    $first_slide = $row3['firstSlide'];
-    $last_slide = $row3['lastSlide'];
+    if ($row3 = mysqli_fetch_assoc($result3)) {
+        $first_slide = $row3['firstSlide'];
+        $last_slide = $row3['lastSlide'];
+    } else {
+        die("Lesson not found.");
+    }
 } else {
-    die("Lesson not found.");
-}
-} else {
-die("Invalid request.");
+    die("Invalid request.");
 }
 ?>
 
@@ -70,116 +70,120 @@ include('nav.php');
 
 <body>
     <div id="lesson_menu">
-    <h5><?php echo htmlspecialchars($chapter_name); ?></h5> <!-- Display the chapter name -->
+        <h5><?php echo htmlspecialchars($chapter_name); ?></h5> <!-- Display the chapter name -->
         <ul>
-            <?php foreach ($lessons as $lesson): ?>
+            <?php foreach ($lessons as $lesson) : ?>
                 <li><a href="#"><?php echo htmlspecialchars($lesson); ?></a></li>
             <?php endforeach; ?>
         </ul>
-        </div>
+    </div>
     <div id="explin_container">
         <div id="pdf-container">
-            <!-- <canvas id="pdf-canvas"></canvas> -->
             <div id="navigation-controls">
-                <button id="prev-page"><i class="fas fa-arrow-left"></i></button>
+                <button id="prev-page"><a onclick="changeSlide(-1)">&#10094;</a></button>
                 <canvas id="pdf-canvas"></canvas>
-                <button id="next-page"><i class="fas fa-arrow-right"></i></button>
+                <button id="next-page"><a onclick="changeSlide(1)">&#10095;</a></button>
             </div>
             <div class="page-count">
-            <span id="page-num"></span> / <span id="page-count"></span>
+                <span id="page-num"></span> / <span id="page-count"></span>
             </div>
-            <div class="recording-controls">
-                <button id="toggleRecord"><i class="fas fa-microphone-slash"></i></button>
-            </div>
-            <div class="submit-button">
-                <button type="button" class="button">Submit</button>
+            <div class="butnContainer" style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; width: 100%;">
+                <div class="recording-controls">
+                    <button id="toggleRecord"><i class="fas fa-microphone-slash"></i></button>
+                </div>
+                <div class="submit-button" style="margin-left: auto;">
+                    <button type="button" class="button">Submit</button>
+                </div>
             </div>
         </div>
     </div>
     <script>
-document.addEventListener('DOMContentLoaded', function() {
-    var url = "<?php echo htmlspecialchars($pdf_file); ?>"; // URL to the PDF file
-    var firstSlide = <?php echo $first_slide; ?>;
-    var lastSlide = <?php echo $last_slide; ?>;
+        document.addEventListener('DOMContentLoaded', function() {
+            var url = "<?php echo htmlspecialchars($pdf_file); ?>"; // URL to the PDF file
+            var firstSlide = <?php echo $first_slide; ?>;
+            var lastSlide = <?php echo $last_slide; ?>;
 
-    var pdfDoc = null,
-        pageNum = firstSlide,
-        pageRendering = false,
-        pageNumPending = null,
-        scale = 1.5,
-        canvas = document.getElementById('pdf-canvas'),
-        ctx = canvas.getContext('2d');
+            var pdfDoc = null,
+                pageNum = firstSlide,
+                pageRendering = false,
+                pageNumPending = null,
+                scale = 1.5,
+                canvas = document.getElementById('pdf-canvas'),
+                ctx = canvas.getContext('2d');
 
-    console.log('Document loaded');
-    console.log('PDF URL:', url);
-    console.log('First Slide:', firstSlide);
-    console.log('Last Slide:', lastSlide);
+            console.log('Document loaded');
+            console.log('PDF URL:', url);
+            console.log('First Slide:', firstSlide);
+            console.log('Last Slide:', lastSlide);
 
-    pdfjsLib.getDocument(url).promise.then(function (pdfDoc_) {
-        pdfDoc = pdfDoc_;
-        console.log('PDF loaded');
-        document.getElementById('page-count').textContent = (lastSlide - firstSlide + 1);
-        renderPage(pageNum);
-    }).catch(function(error) {
-        console.error('Error loading PDF:', error);
-    });
-
-    function renderPage(num) {
-        console.log('Rendering page:', num);
-        pageRendering = true;
-        pdfDoc.getPage(num).then(function (page) {
-            var viewport = page.getViewport({ scale: scale });
-            canvas.height = viewport.height;
-            canvas.width = viewport.width;
-
-            var renderContext = {
-                canvasContext: ctx,
-                viewport: viewport
-            };
-            var renderTask = page.render(renderContext);
-
-            renderTask.promise.then(function () {
-                pageRendering = false;
-                console.log('Page rendered:', num);
-                if (pageNumPending !== null) {
-                    renderPage(pageNumPending);
-                    pageNumPending = null;
-                }
+            pdfjsLib.getDocument(url).promise.then(function(pdfDoc_) {
+                pdfDoc = pdfDoc_;
+                console.log('PDF loaded');
+                document.getElementById('page-count').textContent = (lastSlide - firstSlide + 1);
+                renderPage(pageNum);
+            }).catch(function(error) {
+                console.error('Error loading PDF:', error);
             });
-        }).catch(function(error) {
-            console.error('Error rendering page:', error);
+
+            function renderPage(num) {
+                console.log('Rendering page:', num);
+                pageRendering = true;
+                pdfDoc.getPage(num).then(function(page) {
+                    var viewport = page.getViewport({
+                        scale: scale
+                    });
+                    canvas.height = viewport.height;
+                    canvas.width = viewport.width;
+
+                    var renderContext = {
+                        canvasContext: ctx,
+                        viewport: viewport
+                    };
+                    var renderTask = page.render(renderContext);
+
+                    renderTask.promise.then(function() {
+                        pageRendering = false;
+                        console.log('Page rendered:', num);
+                        if (pageNumPending !== null) {
+                            renderPage(pageNumPending);
+                            pageNumPending = null;
+                        }
+                    });
+                }).catch(function(error) {
+                    console.error('Error rendering page:', error);
+                });
+
+                document.getElementById('page-num').textContent = (num - firstSlide + 1);
+            }
+
+            function queueRenderPage(num) {
+                if (pageRendering) {
+                    pageNumPending = num;
+                } else {
+                    renderPage(num);
+                }
+            }
+
+            document.getElementById('prev-page').addEventListener('click', function() {
+                if (pageNum <= firstSlide) {
+                    return;
+                }
+                pageNum--;
+                queueRenderPage(pageNum);
+            });
+
+            document.getElementById('next-page').addEventListener('click', function() {
+                if (pageNum >= lastSlide) {
+                    return;
+                }
+                pageNum++;
+                queueRenderPage(pageNum);
+            });
         });
-
-        document.getElementById('page-num').textContent = (num - firstSlide + 1);
-    }
-
-    function queueRenderPage(num) {
-        if (pageRendering) {
-            pageNumPending = num;
-        } else {
-            renderPage(num);
-        }
-    }
-
-    document.getElementById('prev-page').addEventListener('click', function () {
-        if (pageNum <= firstSlide) {
-            return;
-        }
-        pageNum--;
-        queueRenderPage(pageNum);
-    });
-
-    document.getElementById('next-page').addEventListener('click', function () {
-        if (pageNum >= lastSlide) {
-            return;
-        }
-        pageNum++;
-        queueRenderPage(pageNum);
-    });
-});
     </script>
     <script src="../VoiceModel/input.js"></script>
 </body>
+
 </html>
 <?php
 $conn->close();

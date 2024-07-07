@@ -202,7 +202,29 @@ nav {
     }
 }
 
-#toggleRecord{
+.page-count {
+    margin-top: -10px; /* Adjust this value as needed */
+    text-align: center; /* Center the text */
+    width: 100%; /* Ensure it takes the full width */
+    position: relative;
+left: 5%;}
+
+.butnContainer {
+    display: flex;
+    justify-content: space-between; /* Space items evenly */
+    align-items: center;
+    width: 100%;
+    position: relative;
+    margin-top: 2%;
+}
+
+.recording-controls {
+    position: absolute;
+    left: 55%;
+    transform: translateX(-50%);
+}
+
+#toggleRecord {
     background-color: var(--secondary);
     border: none;
     border-radius: 50%;
@@ -219,15 +241,17 @@ nav {
 }
 
 #toggleRecord:hover {
-  background-color: #616161;
-  cursor: pointer;
-  transition: all 0.2s ease-out;
+    background-color: #616161;
+    cursor: pointer;
+    transition: all 0.2s ease-out;
 }
 
-.submit-button{
-margin-left: 80%;
-margin-top: -6.7%;
+.submit-button {
+    margin-left: auto;
 }
+
+
+
 
 /* ------------ LOGIN PAGE ------------- */
 
