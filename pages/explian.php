@@ -185,6 +185,3 @@ include('nav.php');
 </body>
 
 </html>
-<?php
-$conn->close();
-?>
