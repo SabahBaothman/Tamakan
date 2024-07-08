@@ -1,5 +1,9 @@
 <?php
-session_start();
+// nav.php and lessons.php
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+
 
 include('../db/db_conn.php');
 
