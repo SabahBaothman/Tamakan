@@ -1056,3 +1056,18 @@ left: 5%;}
     font-weight: bold;
     cursor: pointer;
 }
+
+/* ------------ STUDSCORES PAGE ------------ */
+
+.studScoreCheck {
+    margin-left: 3%;
+}
+
+.studScoreCheck p {
+    margin-top: 0;
+    margin-bottom: 2%;
+}
+
+.studScoreCheck span {
+    color: #BFBFBF;
+}
