@@ -1,4 +1,8 @@
 <?php
+
+header('Cache-Control: no cache'); //no cache
+session_cache_limiter('private_no_expire'); // works
+
 session_start();
 if (!isset($_SESSION['id'])) {
     header("Location: login.php");
@@ -54,6 +58,11 @@ if(count($studentIDs) > 0) {
     }
 }
 
+// Sort $studInfo array to display students with done=1 first
+usort($studInfo, function($a, $b) {
+    return $b['done'] - $a['done'];
+});
+
 ?>
 
 <!DOCTYPE html>
@@ -82,7 +91,8 @@ include('./nav.php');
 
         <!-- STUDENTS' SCORES -->
         <div>
-            <?php foreach($studInfo as $stud) { ?>
+            <?php if(count($studInfo) > 0):
+                foreach($studInfo as $stud) :?>
             <div class="lessonCard">
                 <div class="leftContent">
                     <div class="<?php echo ($stud['done']==1) ? 'checked' : 'uncheck'; ?>">
@@ -106,7 +116,13 @@ include('./nav.php');
                 </div>
                 <?php } ?>
             </div> 
-            <?php } ?>
+                <?php endforeach; ?>
+            <?php else: ?>
+            <div class="no-content">
+                <img src="../images/noContent.png" alt="No Content" width="400">
+                <h2>No Content Found</h2>
+            </div>
+            <?php endif; ?>
 
         </div>
 
