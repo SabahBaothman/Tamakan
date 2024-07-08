@@ -59,7 +59,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $stmt->close();
     }
 
-    header("Location: chapters.php");
-    exit();
+   // Redirect to summarization.php
+   header("Location: summarization.php?chapter_number=$chapter_number&course_id=$course_id&teacher_id=$user_id");
+   exit();
 }
 ?>
