@@ -31,7 +31,7 @@ $conn->close();
 </head>
 <body>
     <!-- Navigation bar -->
-    <nav>
+    <nav class="navbar">
         <div class="nav-left">
             <a href="courses.php" id="nav-logo-holder">
                 <img id="logo" src="../images/logo.png" alt="Logo" width="80">
