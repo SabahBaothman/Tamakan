@@ -17,7 +17,7 @@ function isLessonExplained($conn, $student_id, $course_id, $chapter_number, $les
     $done=0;
     $sql3 = "SELECT done FROM explanation WHERE student_id = ? AND course_id = ? AND chapter_number = ? AND lesson_number = ?";
     $stmt3 = $conn -> prepare($sql3);
-    $stmt3 -> bind_param("iiii", $student_id, $course_id, $chapter_number, $lesson_number);
+    $stmt3 -> bind_param("isii", $student_id, $course_id, $chapter_number, $lesson_number);
     $stmt3 -> execute();
     $stmt3 -> bind_result($done);
     $stmt3 -> fetch();
@@ -29,7 +29,7 @@ function isLessonExplained($conn, $student_id, $course_id, $chapter_number, $les
 if ($user_type=='t') {  // User: Teacher
     $sql = "SELECT * FROM lessons WHERE teacher_id = ? AND course_id = ? AND chapter_number = ?";
     $stmt = $conn -> prepare($sql);
-    $stmt -> bind_param("iii", $user_id, $course_id, $chapter_number);
+    $stmt -> bind_param("isi", $user_id, $course_id, $chapter_number);
     $stmt -> execute();
     $lessons = $stmt -> get_result();
 
@@ -38,7 +38,7 @@ if ($user_type=='t') {  // User: Teacher
     // Fetch teacher_id from enrollment table
     $sql1 = "SELECT teacher_id FROM enrollment WHERE student_id = ? AND course_id = ?";
     $stmt1 = $conn -> prepare($sql1);
-    $stmt1 -> bind_param("ii", $user_id, $course_id);
+    $stmt1 -> bind_param("is", $user_id, $course_id);
     $stmt1 -> execute();
     $stmt1 -> bind_result($teacher_id);
     $stmt1 -> fetch();
@@ -47,7 +47,7 @@ if ($user_type=='t') {  // User: Teacher
     // Fetch Lessons
     $sql2 = "SELECT * FROM lessons WHERE teacher_id = ? AND course_id = ? AND chapter_number = ?";
     $stmt2 = $conn -> prepare($sql2);
-    $stmt2 -> bind_param("iii", $teacher_id, $course_id, $chapter_number);
+    $stmt2 -> bind_param("isi", $teacher_id, $course_id, $chapter_number);
     $stmt2 -> execute();
     $lessons = $stmt2 -> get_result();
     $stmt2 -> close();
@@ -135,6 +135,6 @@ include('./nav.php');
 </body>
 </html>
 
-<?php
+<!-- <?php
 $conn->close();
-?>
+?> -->
