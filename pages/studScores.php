@@ -20,7 +20,7 @@ $lesson_number = $_POST['lesson_number'];
 // Fetch all students IDs for a specific course under a specific teacher
 $sql1 = "SELECT student_id FROM enrollment WHERE teacher_id = ? AND course_id = ?";
 $stmt1 = $conn -> prepare($sql1);
-$stmt1 -> bind_param("ii", $user_id, $course_id);
+$stmt1 -> bind_param("is", $user_id, $course_id);
 $stmt1 -> execute();
 $result = $stmt1->get_result();
 $studentIDs = [];
