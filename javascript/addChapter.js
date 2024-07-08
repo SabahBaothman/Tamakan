@@ -1,3 +1,5 @@
+
+
 document.getElementById('main-lessons').addEventListener('input', function() {
     const numLessons = parseInt(this.value);
     const addLlos = document.getElementById('add-llos');
@@ -74,3 +76,4 @@ document.getElementById('main-lessons').addEventListener('input', function() {
         }
     }
 });
+

@@ -598,6 +598,12 @@ left: 5%;}
             cursor: pointer;
         }
 
+        #file-name{
+            margin-top: 15px;
+            background-color: rgba(0, 0, 0, 0.20);
+            border-radius: 8px;
+        }
+
         /* .add-chapter-form button[type="submit"] {
             width: 8%;
             margin-top: 20px;
