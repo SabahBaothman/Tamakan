@@ -13,22 +13,6 @@ $chapter_number = $_POST['chapter_number'];
 $lesson_title = $_POST['lesson_title'];
 $lesson_number = $_POST['lesson_number'];
 
-// Function to check if the lesson is explained or not
-function isLessonExplained($conn, $student_id, $course_id, $chapter_number, $lesson_number){
-    $done=0;
-    $total_score = 0;
-    $sql3 = "SELECT done, total_score FROM explanation WHERE student_id = ? AND course_id = ? AND chapter_number = ? AND lesson_number = ?";
-    $stmt3 = $conn -> prepare($sql3);
-    $stmt3 -> bind_param("iiii", $student_id, $course_id, $chapter_number, $lesson_number);
-    $stmt3 -> execute();
-    // Bind result to both 'done' and 'total_score'
-    $stmt3->bind_result($done, $total_score);
-    $stmt3->fetch();
-    $stmt3->close();
-    // Return both 'done' and 'total_score'
-    return array('done' => $done, 'total_score' => $total_score);
-}
-
 // Fetch all students IDs for a specific course under a specific teacher
 $sql1 = "SELECT student_id FROM enrollment WHERE teacher_id = ? AND course_id = ?";
 $stmt1 = $conn -> prepare($sql1);
@@ -50,11 +34,21 @@ if(count($studentIDs) > 0) {
         $stmt2 -> bind_param("i", $student);
         $stmt2 -> execute();
         $temp = $stmt2 -> get_result();
-        while($row = $temp -> fetch_assoc()) {
+        while ($row = $temp->fetch_assoc()) {
+            // Fetch explanation data (done and total score) for each student
+            $sql3 = "SELECT done, total_score FROM explanation WHERE student_id = ? AND course_id = ? AND chapter_number = ? AND lesson_number = ?";
+            $stmt3 = $conn->prepare($sql3);
+            $stmt3->bind_param("isii", $student, $course_id, $chapter_number, $lesson_number);
+            $stmt3->execute();
+            $explanation = $stmt3->get_result()->fetch_assoc();
+            $stmt3->close();
+
             $studInfo[] = [
                 'id' => $row['id'],
-                'name' => $row['name']
-            ]; // Store IDs and names in an array of associative arrays
+                'name' => $row['name'],
+                'done' => $explanation? $explanation['done'] : 0,
+                'total_score' => $explanation? $explanation['total_score'] : 0
+            ];
         }
         $stmt2 -> close();
     }
@@ -88,28 +82,26 @@ include('./nav.php');
 
         <!-- STUDENTS' SCORES -->
         <div>
-            <?php foreach($studInfo as $stud) { 
-                $explanation = isLessonExplained($conn, $stud['id'], $course_id, $chapter_number, $lesson_number);
-            ?>
+            <?php foreach($studInfo as $stud) { ?>
             <div class="lessonCard">
                 <div class="leftContent">
-                    <div class="<?php echo ($explanation['done']==1) ? 'checked' : 'uncheck'; ?>">
-                        <?php if($explanation['done']==1){ ?>
+                    <div class="<?php echo ($stud['done']==1) ? 'checked' : 'uncheck'; ?>">
+                        <?php if($stud['done']==1){ ?>
                         <div class="checkmark"></div>
                         <?php } ?>
                     </div>
-                    <div class="<?php echo ($explanation['done']==1 ? 'studScoreCheck' : ''); ?>">
-                        <p><?php echo $stud['name'] ?></p>
-                        <?php if($explanation['done']==1){ ?>
+                    <div class="<?php echo ($stud['done']==1 ? 'studScoreCheck' : ''); ?>">
+                        <p><?php echo $stud['id'] ?> | <?php echo $stud['name'] ?></p>
+                        <?php if($stud['done']==1){ ?>
                         <span>have completed the explanation</span>
                         <?php } ?>
                     </div>
                 </div>
 
-                <?php if($explanation['done']==1){ ?>
+                <?php if($stud['done']==1){ ?>
                 <div class="rigthContent">
                     <div id="totalScore" style="font-size: 10px; background-color: white;">
-                        <p><span><?php echo htmlspecialchars($explanation['total_score'])?></span>/100</p>
+                        <p><span><?php echo htmlspecialchars($stud['total_score'])?></span>/100</p>
                     </div>
                 </div>
                 <?php } ?>
@@ -122,7 +114,3 @@ include('./nav.php');
 </body>
 
 </html>
-
-<?php
-$conn->close();
-?>
