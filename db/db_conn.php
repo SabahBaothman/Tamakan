@@ -8,11 +8,8 @@ $server = "localhost";
 $username = "root";
 $password = "";
 $dbname = "tmkn";
-$port = 3307; 
 
-$conn = new mysqli($server, $username, $password, $dbname, $port);
-
-// $conn =  mysqli_connect($server, $username, $password, $dbnamem, $port);
+$conn =  mysqli_connect($server, $username, $password, $dbname);
 
 if (!$conn) {
 
