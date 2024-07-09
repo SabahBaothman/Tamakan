@@ -3,7 +3,11 @@
 header('Cache-Control: no cache'); //no cache
 session_cache_limiter('private_no_expire'); // works
 
-session_start();
+// nav.php and lessons.php
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+
 if (!isset($_SESSION['id'])) {
     header("Location: login.php");
     exit();

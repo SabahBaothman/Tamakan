@@ -1,7 +1,9 @@
 <?php
-header('Cache-Control: no cache'); //no cache
-session_cache_limiter('private_no_expire'); // works
-session_start();
+// nav.php and lessons.php
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+;
 if (!isset($_SESSION['id'])) {
     header("Location: login.php");
     exit();
@@ -40,10 +42,6 @@ $conn->close();
             <?php if ($user_type == 's'): ?>
                 <span class="vertical-bar">|</span>
                 <a href="dashboard.php" id="nav-scores-link">Dashboard</a>
-            <?php endif; ?>
-            <?php if ($user_type == 't'): ?>
-                <span class="vertical-bar">|</span>
-                <a href="scores.php" id="nav-scores-link">Scores</a>
             <?php endif; ?>
         </div>
         <div class="nav-right">
