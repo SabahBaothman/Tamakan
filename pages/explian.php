@@ -107,6 +107,7 @@ include('nav.php');
                         <input type="hidden" name="course_id" value="<?php echo htmlspecialchars($course_id); ?>">
                         <input type="hidden" name="teacher_id" value="<?php echo htmlspecialchars($teacher_id); ?>">
                         <input type="hidden" name="lesson_number" value="<?php echo htmlspecialchars($lesson_number); ?>">
+                        <input type="hidden" id="transcribed_text" name="transcribed_text" value="">
                         <button type="submit" class="button">Submit</button>
                     </form>
                 </div>
@@ -199,5 +200,4 @@ include('nav.php');
     </script>
     <script src="../VoiceModel/input.js"></script>
 </body>
-
 </html>
