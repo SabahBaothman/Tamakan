@@ -25,8 +25,14 @@ def summaries_from_pdf(pdf_path, firstslide, lastslide):
             summary = summarizer(slide_text, max_length=150, min_length=40, do_sample=False)
             summaries.append(summary[0]['summary_text'])
 
-    # Print summaries
+    # Format summaries
+    formatted_summaries = ""
     for i, summary in enumerate(summaries, 1):
-        print(f"Summary of Slide {i}:\n{summary}\n")
-   
-    return ' '.join(summaries)
+        formatted_summaries += f"Summary of Slide {i}:\n{summary}\n\n"
+
+    print (formatted_summaries)
+    
+    return formatted_summaries
+    
+    
+    #return ' '.join(summaries)
