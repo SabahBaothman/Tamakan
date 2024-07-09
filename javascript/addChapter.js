@@ -1,41 +1,23 @@
-
-
 document.getElementById('main-lessons').addEventListener('input', function() {
     const numLessons = parseInt(this.value);
-
     const addLlos = document.getElementById('add-llos');
 
-    // Calculate the current number of lesson blocks dynamically added.
-    // Since the initial set is not included in dynamic additions, subtract 1 from current count
-    const currentLessonCount = Math.floor((addLlos.children.length / 3) - 1);
+    // Clear existing dynamically added lesson blocks
+    while (addLlos.children.length > 0) {
+        addLlos.removeChild(addLlos.lastChild);
+    }
 
+    // Add new lesson blocks
     if (!isNaN(numLessons)) {
-        // If the number of lessons is increased, add new blocks
-        if (numLessons > currentLessonCount + 1) {
-            for (let i = currentLessonCount + 2; i <= numLessons; i++) {
-                addLessonBlock(i, addLlos);
-            }
-        }
-        // If the number of lessons is decreased or zero, adjust blocks appropriately
-        else if (numLessons < currentLessonCount + 1) {
-            if (numLessons == 0) {
-                // If zero, remove all dynamically added blocks
-                while (addLlos.children.length > 3) {
-                    removeLessonBlock(addLlos);
-                }
-            } else {
-                // Remove excess blocks above the entered number
-                for (let i = currentLessonCount + 1; i > numLessons; i--) {
-                    removeLessonBlock(addLlos);
-                }
-            }
+        for (let i = 1; i <= numLessons; i++) {
+            addLessonBlock(i, addLlos);
         }
     }
 });
 
 function addLessonBlock(lessonNumber, container) {
     // Create lesson title block
-    const lessonTitleDiv = createInputBlock('lesson-title-' + lessonNumber, 'Lesson ' + lessonNumber + ':', 'text', 'Enter Lesson ' + lessonNumber + ' Title');
+    const lessonTitleDiv = createInputBlock('lesson_title_' + lessonNumber, 'Lesson ' + lessonNumber + ':', 'text', 'Enter Lesson ' + lessonNumber + ' Title');
     container.appendChild(lessonTitleDiv);
 
     // Create slides number block
@@ -43,15 +25,8 @@ function addLessonBlock(lessonNumber, container) {
     container.appendChild(slidesDiv);
 
     // Create LLOs block
-    const lloDiv = createInputBlock('llo-' + lessonNumber, 'Lesson Learning Outcomes (LLOs) ' + lessonNumber + ':', 'text', 'Add LLOs for Lesson ' + lessonNumber);
+    const lloDiv = createInputBlock('llo_' + lessonNumber, 'Lesson Learning Outcomes (LLOs) ' + lessonNumber + ':', 'text', 'Add LLOs for Lesson ' + lessonNumber);
     container.appendChild(lloDiv);
-}
-
-function removeLessonBlock(container) {
-    // Remove the last 3 divs (a complete lesson block)
-    for (let i = 0; i < 3; i++) {
-        container.removeChild(container.lastElementChild);
-    }
 }
 
 function createInputBlock(id, labelText, type, placeholder) {
@@ -73,8 +48,8 @@ function createSlidesBlock(lessonNumber) {
     slidesLabel.textContent = 'Slides Number:';
     const slidesBlockDiv = document.createElement('div');
     slidesBlockDiv.classList.add('slides-block');
-    const slidesFromInput = createInput('slides-from-' + lessonNumber, 'number', 'From', 'slides-input');
-    const slidesToInput = createInput('slides-to-' + lessonNumber, 'number', 'To', 'slides-input');
+    const slidesFromInput = createInput('slides_from_' + lessonNumber, 'number', 'From', 'slides-input');
+    const slidesToInput = createInput('slides_to_' + lessonNumber, 'number', 'To', 'slides-input');
     slidesBlockDiv.appendChild(slidesFromInput);
     slidesBlockDiv.appendChild(slidesToInput);
     slidesDiv.appendChild(slidesLabel);
