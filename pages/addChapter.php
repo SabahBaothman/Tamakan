@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,7 +6,7 @@
     <title>Add Chapter</title>
     <link rel="stylesheet" href="../style.css">
     <!-- Favicon icon-->
-	<link rel="shortcut icon" type="images/x-icon" href="../images/blueLogo.ico" />
+    <link rel="shortcut icon" type="images/x-icon" href="../images/blueLogo.ico" />
     <script src="../javascript/addChapter.js" defer></script>
 </head>
 <?php include('nav.php'); ?>
@@ -69,7 +67,7 @@
             <div class="file-upload">
                 <img id="upload" src="../images/uploadFile.png" alt="upload file" width="50">
                 <p></p>
-                <input type="file" id="upload-chapter" name="upload_chapter" required>
+                <input type="file" id="upload-chapter" name="upload_chapter" accept="application/pdf" required>
                 <label for="upload-chapter"><u>Click to Upload Chapter</u></label>
                 <span id="file-name" class="hidden"></span>
             </div>
@@ -82,7 +80,6 @@
 </body>
 
 <script>
-
 document.getElementById('upload-chapter').addEventListener('change', function(event) {
     const fileName = document.getElementById('file-name');
 
