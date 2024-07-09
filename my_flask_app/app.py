@@ -4,6 +4,7 @@ from transformers import pipeline
 from pdfextraction_PyPDF2 import summaries_from_pdf
 import PyPDF2
 
+
 app = Flask(__name__)
 CORS(app)
 

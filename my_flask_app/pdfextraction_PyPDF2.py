@@ -1,6 +1,5 @@
 import PyPDF2
 from transformers import pipeline
-import spacy
 
 def extract_text_from_pdf(pdf_path, firstslide, lastslide):
     with open(pdf_path, 'rb') as file:
