@@ -44,6 +44,7 @@ toggleRecordButton.addEventListener("click", () => {
                       // document.getElementById("whisper_response_display_area").textContent =
                       //     whisper_received_data.text;
                       // console.log("Response from server:", whisper_received_data);
+                      document.getElementById('transcribed_text').value = data;
                     })
                     .catch(function (error) {
                         console.error("Error sending audio file to server:", error);

@@ -1,7 +1,11 @@
 <?php
 header('Cache-Control: no cache'); //no cache
 session_cache_limiter('private_no_expire'); // works
-session_start();
+// nav.php and lessons.php
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+
 if (!isset($_SESSION['id'])) {
     header("Location: login.php");
     exit();
@@ -51,7 +55,7 @@ if (isset($_POST['teacher_id'], $_POST['course_id'], $_POST['chapter_number'], $
         $last_slide = $row3['lastSlide'];
     } else {
         die("Lesson not found.");
-    }
+    } 
 } else {
     die("Invalid request.");
 }
@@ -98,7 +102,14 @@ include('nav.php');
                     <button id="toggleRecord"><i class="fas fa-microphone-slash"></i></button>
                 </div>
                 <div class="submit-button" style="margin-left: auto;">
-                    <button type="button" class="button">Submit</button>
+                    <form id="submitForm" method="POST" action="performance.php">
+                        <input type="hidden" name="chapter_number" value="<?php echo htmlspecialchars($chapter_number); ?>">
+                        <input type="hidden" name="course_id" value="<?php echo htmlspecialchars($course_id); ?>">
+                        <input type="hidden" name="teacher_id" value="<?php echo htmlspecialchars($teacher_id); ?>">
+                        <input type="hidden" name="lesson_number" value="<?php echo htmlspecialchars($lesson_number); ?>">
+                        <input type="hidden" id="transcribed_text" name="transcribed_text" value="">
+                        <button type="submit" class="button">Submit</button>
+                    </form>
                 </div>
             </div>
         </div>
@@ -189,5 +200,4 @@ include('nav.php');
     </script>
     <script src="../VoiceModel/input.js"></script>
 </body>
-
 </html>

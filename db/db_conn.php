@@ -9,10 +9,7 @@ $username = "root";
 $password = "";
 $dbname = "tmkn";
 
-$conn = new mysqli($server, $username, $password, $dbname);
-$conn = new mysqli($server, $username, $password, $dbname);
-
-// $conn =  mysqli_connect($server, $username, $password, $dbname);
+$conn =  mysqli_connect($server, $username, $password, $dbname);
 
 if (!$conn) {
 
