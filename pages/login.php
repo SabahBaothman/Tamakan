@@ -1,10 +1,10 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Favicon icon-->
+	<link rel="shortcut icon" type="images/x-icon" href="../images/blueLogo.ico" />
     <title>Login</title>
     <link rel="stylesheet" href="../style.css">
 </head>

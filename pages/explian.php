@@ -1,5 +1,11 @@
 <?php
-
+header('Cache-Control: no cache'); //no cache
+session_cache_limiter('private_no_expire'); // works
+session_start();
+if (!isset($_SESSION['id'])) {
+    header("Location: login.php");
+    exit();
+}
 include('../db/db_conn.php');
 
 $pdf_file = ''; // Initialize an empty variable

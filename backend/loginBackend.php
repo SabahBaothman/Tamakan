@@ -2,9 +2,9 @@
 session_start(); // Start the session
 
 // Enable error reporting for debugging purposes
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+// ini_set('display_errors', 1);
+// ini_set('display_startup_errors', 1);
+// error_reporting(E_ALL);
 
 // Include the database connection file
 include('../db/db_conn.php');

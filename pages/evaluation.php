@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="../../style.css">
+    <!-- Favicon icon-->
+	<link rel="shortcut icon" type="images/x-icon" href="../images/blueLogo.ico" />
     <title>Evaluation</title>
 </head>
 

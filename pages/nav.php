@@ -1,4 +1,12 @@
 <?php
+header('Cache-Control: no cache'); //no cache
+session_cache_limiter('private_no_expire'); // works
+session_start();
+if (!isset($_SESSION['id'])) {
+    header("Location: login.php");
+    exit();
+}
+
 include('../db/db_conn.php');
 
 // Fetch the user's name from the database
@@ -23,7 +31,7 @@ $conn->close();
 </head>
 <body>
     <!-- Navigation bar -->
-    <nav>
+    <nav class="navbar">
         <div class="nav-left">
             <a href="courses.php" id="nav-logo-holder">
                 <img id="logo" src="../images/logo.png" alt="Logo" width="80">

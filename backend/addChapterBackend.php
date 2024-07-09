@@ -17,8 +17,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $main_lessons = $_POST['main_lessons'];
     $lessons = [];
     $llos = [];
-    
+
     for ($i = 1; $i <= $main_lessons; $i++) {
+        // Validate lesson fields
+        if (!isset($_POST['lesson_title_' . $i], $_POST['slides_from_' . $i], $_POST['slides_to_' . $i], $_POST['llo_' . $i])) {
+            die("Missing data for lesson $i.");
+        }
+
         $lessons[] = [
             'number' => $i,
             'title' => $_POST['lesson_title_' . $i],
@@ -59,8 +64,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $stmt->close();
     }
 
-   // Redirect to summarization.php
-   header("Location: summarization.php?chapter_number=$chapter_number&course_id=$course_id&teacher_id=$user_id");
-   exit();
+    // Redirect to summarization.php
+    header("Location: summarization.php?chapter_number=$chapter_number&course_id=$course_id&teacher_id=$user_id");
+    exit();
 }
 ?>
