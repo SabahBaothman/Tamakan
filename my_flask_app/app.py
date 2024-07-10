@@ -10,14 +10,16 @@ from tenacity import retry, wait_exponential, stop_after_attempt
 app = Flask(__name__)
 CORS(app)
 
+
 @app.route('/summarize', methods=['POST'])
 def summarize():
     data = request.json
     pdf_path = data.get('pdf_path')
     start_page = data.get('start_page')
     end_page = data.get('end_page')
-    print(f'Received request with path: {pdf_path}, start_page: {start_page}, end_page: {end_page}')
-    
+    print(f'Received request with path: {pdf_path}, start_page: {
+          start_page}, end_page: {end_page}')
+
     if not pdf_path or start_page is None or end_page is None:
         return jsonify({'error': 'Missing parameters'}), 400
 
@@ -29,11 +31,13 @@ def summarize():
     except Exception as e:
         print(f'Error: {e}')
         return jsonify({'error': str(e)}), 500
-    
-#-----------------------------------------------------------------------
+
+# -----------------------------------------------------------------------
+
 
 # OpenAI API key
 openai.api_key = 'sk-proj-ICuOpnqJgu2aGoKrDzacT3BlbkFJmCsf03Bc68Elugkxllmn'
+
 
 @retry(wait=wait_exponential(multiplier=1, min=2, max=10), stop=stop_after_attempt(100))
 def call_gpt(prompt, model_engine="gpt-4-turbo"):
@@ -50,17 +54,18 @@ def call_gpt(prompt, model_engine="gpt-4-turbo"):
     except Exception as e:
         print(f"An error occurred: {e}")
         return None
-    
-    
+
+
 def evaluate_with_gpt(slide_summaries, student_explanation, LOs):
     results = []
     for lo in LOs:
         prompt = (
             "You are evaluating a student's explanation. Please provide a thorough evaluation based on the following guidelines:\n\n"
-            "Note1: Provide a title for each improvement paragraph, not the word 'Title' itself.\n"
-            "Note2: Summarize the comments for each Learning Objective (LO) to be no more than 60 words.\n"
-            "Note3: Summarize the improvements for each Learning Objective (LO) to be no more than 60 words.\n"
-            "Note4: Evaluate the score of each Learning Objective separately and provide logical, varied scores.\n\n"
+
+            "- Provide a title for each improvement paragraph, but do not use the word 'Title' itself.\n"
+            "- Summarize the comments for each Learning Objective (LO) in no more than 60 words.\n"
+            "- Summarize the improvements for each Learning Objective (LO) in no more than 60 words.\n"
+            "- Evaluate the score of each Learning Objective separately and provide logical, varied scores.\n\n"
 
             f"Slide Summaries:\n{slide_summaries}\n\n"
             f"Student's Explanation:\n{student_explanation}\n\n"
@@ -78,7 +83,7 @@ def evaluate_with_gpt(slide_summaries, student_explanation, LOs):
             "2. Improvement Title: Explanation\n"
             "3. Improvement Title: Explanation\n"
         )
-        
+
         response = call_gpt(prompt)
 
         if response:
@@ -88,18 +93,22 @@ def evaluate_with_gpt(slide_summaries, student_explanation, LOs):
 
     return results
 
+
 @app.route('/evaluate', methods=['POST'])
 def evaluate():
     data = request.json
     slide_summaries = data.get('summarize')
     student_explanation = data.get('transcribed_text')
     LOs = data.get('llos')
-    
+
     print(f"Received data: {data}")  # Debugging: Print received data
-    evaluation_results = evaluate_with_gpt(slide_summaries, student_explanation, LOs)
-    print(f"Evaluation results: {evaluation_results}")  # Debugging: Print results
+    evaluation_results = evaluate_with_gpt(
+        slide_summaries, student_explanation, LOs)
+    # Debugging: Print results
+    print(f"Evaluation results: {evaluation_results}")
     return jsonify(evaluation_results)
 
-#-----------------------------------------------------------------------
+
+# -----------------------------------------------------------------------
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
