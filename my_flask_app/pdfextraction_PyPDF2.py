@@ -27,11 +27,11 @@ def summaries_from_pdf(pdf_path, firstslide, lastslide):
 
     # Format summaries
     formatted_summaries = ""
-    for i, summary in enumerate(summaries, 1):
+    for i, summary in enumerate(summaries, firstslide):
         formatted_summaries += f"Summary of Slide {i}:\n{summary}\n\n"
 
     print (formatted_summaries)
-    
+
     return formatted_summaries
     
     
