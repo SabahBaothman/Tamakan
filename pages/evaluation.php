@@ -51,15 +51,15 @@ include('./nav.php');
                         // Extract the score from the response
                         preg_match('/Score: (\d+)%/', $response[$index], $matches);
                         $score = isset($matches[1]) ? $matches[1] : 0;
-
+            
                         // Extract the comments from the response
                         preg_match('/Comments:\n(.*?)\nImprovements:/s', $response[$index], $comments_matches);
                         $comments = isset($comments_matches[1]) ? $comments_matches[1] : '';
-
+            
                         // Extract the improvements from the response
                         preg_match('/Improvements:\n(.*)/s', $response[$index], $improvements_matches);
                         $improvements = isset($improvements_matches[1]) ? $improvements_matches[1] : '';
-
+            
                         echo '
                         <div class="evalCard" comment= "'.$comments.'" data-explain=" '.$improvements.'">
                             <div class="upHalf">
@@ -80,6 +80,7 @@ include('./nav.php');
             } else {
                 echo '<p>No evaluations found.</p>';
             }
+            
         } else {
             echo '<p>Invalid request. No data received.</p>';
         }

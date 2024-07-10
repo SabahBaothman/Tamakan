@@ -58,10 +58,13 @@ if (isset($_GET['teacher_id'], $_GET['course_id'], $_GET['chapter_number'], $_GE
     if (isset($response_data['error'])) {
         die('Flask service error: ' . $response_data['error']);
     }
+    
+    // Debug statements to check encoded data
+    file_put_contents('debug_log.txt', "Encoded LLOs: " . $llos . " Encoded Response: " . $response, FILE_APPEND);
+    
 
     // Debug statements to check data before encoding
     file_put_contents('debug_log.txt', "Before encoding LLOs: " . print_r($llos_array, true) . "Response: " . print_r($response_data, true));
-
     // Send the response data to the evaluation page
     $llos = urlencode(json_encode($llos_array));
     $response = urlencode(json_encode($response_data));
