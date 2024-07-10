@@ -56,20 +56,29 @@ def evaluate_with_gpt(slide_summaries, student_explanation, LOs):
     results = []
     for lo in LOs:
         prompt = (
+            "You are evaluating a student's explanation. Please provide a thorough evaluation based on the following guidelines:\n\n"
+            "Note1: Provide a title for each improvement paragraph, not the word 'Title' itself.\n"
+            "Note2: Summarize the comments for each Learning Objective (LO) to be no more than 60 words.\n"
+            "Note3: Summarize the improvements for each Learning Objective (LO) to be no more than 60 words.\n"
+            "Note4: Evaluate the score of each Learning Objective separately and provide logical, varied scores.\n\n"
+
             f"Slide Summaries:\n{slide_summaries}\n\n"
             f"Student's Explanation:\n{student_explanation}\n\n"
             f"Learning Objective: {lo}\n\n"
             "Evaluate the student's explanation based on the slide summaries and the learning objective. "
-            "Provide a score out of 100 along with brief comments justifying the score and suggest specific improvements (in points). \n"
-            "Print the output in this format: \n"
-            "Score: #%\n"
+            "Provide a score out of 100 along with brief comments justifying the score and suggest specific improvements (in points).\n"
+            "Print the output in this format:\n"
+            "Score: #\n"
             "Comments:\n"
+            "1. Comment 1\n"
+            "2. Comment 2\n"
+            "3. Comment 3\n"
             "Improvements:\n"
-            "1. Title: Explanation\n"
-            "2. Title: Explanation\n"
-            "3. Title: Explanation\n"
+            "1. Improvement Title: Explanation\n"
+            "2. Improvement Title: Explanation\n"
+            "3. Improvement Title: Explanation\n"
         )
-
+        
         response = call_gpt(prompt)
 
         if response:

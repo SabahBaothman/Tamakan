@@ -34,14 +34,6 @@ if (isset($_GET['teacher_id'], $_GET['course_id'], $_GET['chapter_number'], $_GE
         'llos' => $llos_array
     ];
 
-
-    // Prepare data to send to Python server
-    $data = [
-        'summarize' => $summarize,
-        'transcribed_text' => $transcribed_text,
-        'llos' => $llos_array
-    ];
-
     // Call Flask service for evaluation
     $flask_service_url = 'http://localhost:5000/evaluate';
     $options = array(
@@ -51,7 +43,7 @@ if (isset($_GET['teacher_id'], $_GET['course_id'], $_GET['chapter_number'], $_GE
             'content' => json_encode($data),
         ),
     );
-    
+
     $context  = stream_context_create($options);
     $result = file_get_contents($flask_service_url, false, $context);
 
@@ -67,9 +59,18 @@ if (isset($_GET['teacher_id'], $_GET['course_id'], $_GET['chapter_number'], $_GE
         die('Flask service error: ' . $response_data['error']);
     }
 
-    echo '<pre>';
-    print_r($response_data);
-    echo '</pre>';
+    // Debug statements to check data before encoding
+    file_put_contents('debug_log.txt', "Before encoding LLOs: " . print_r($llos_array, true) . "Response: " . print_r($response_data, true));
+
+    // Send the response data to the evaluation page
+    $llos = urlencode(json_encode($llos_array));
+    $response = urlencode(json_encode($response_data));
+
+    // Debug statements to check encoded data
+    file_put_contents('debug_log.txt', "Encoded LLOs: " . $llos . " Encoded Response: " . $response, FILE_APPEND);
+
+    header("Location: ../pages/evaluation.php?llos=$llos&response=$response");
+    exit;
 } else {
     echo json_encode(['error' => 'Invalid request.']);
 }

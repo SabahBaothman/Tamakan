@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="../../style.css">
     <!-- Favicon icon-->
-	<link rel="shortcut icon" type="images/x-icon" href="../images/blueLogo.ico" />
+    <link rel="shortcut icon" type="images/x-icon" href="../images/blueLogo.ico" />
     <title>Evaluation</title>
 </head>
 
@@ -32,41 +32,58 @@ include('./nav.php');
             </div>
         </div>
 
-        <!-- LLO Evaluation -->
-        <div class="evalCard">
-            <div class="upHalf">
-                <h3>LLO 1</h3>
-                <button class="scoreExplain">?</button>
-            </div>
-            
-            <div class="downHalf">
-                <div><p>Explain the characteristics that distinguish the database approach from the approach of programming with data files.</p></div>
-                <div class="scoreContainer">
-                    <div class="scoreBar">
-                        <div class="scorePer" per="70%" style="max-width: 70%">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <?php
+        if (isset($_GET['llos']) && isset($_GET['response'])) {
+            $llos = json_decode($_GET['llos'], true);
+            $response = json_decode($_GET['response'], true);
 
-        <div class="evalCard">
-            <div class="upHalf">
-                <h3>LLO 1</h3>
-                <button class="scoreExplain">?</button>
-            </div>
-            
-            <div class="downHalf">
-                <div><p>Identify major DBMS functions and describe their role in a database system.</p></div>
-                <div class="scoreContainer">
-                    <div class="scoreBar">
-                        <div class="scorePer" per="40%" style="max-width: 40%">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+            // Debug statements to check received data
+            echo "<pre>";
+            echo "Received LLOs: ";
+            print_r($llos);
+            echo "Received Response: ";
+            print_r($response);
+            echo "</pre>";
 
+            if (!empty($response) && is_array($response) && !empty($llos) && is_array($llos)) {
+                foreach ($llos as $index => $llo) {
+                    if (isset($response[$index])) {
+                        // Extract the score from the response
+                        preg_match('/Score: (\d+)%/', $response[$index], $matches);
+                        $score = isset($matches[1]) ? $matches[1] : 0;
+
+                        // Extract the comments from the response
+                        preg_match('/Comments:\n(.*?)\nImprovements:/s', $response[$index], $comments_matches);
+                        $comments = isset($comments_matches[1]) ? $comments_matches[1] : '';
+
+                        // Extract the improvements from the response
+                        preg_match('/Improvements:\n(.*)/s', $response[$index], $improvements_matches);
+                        $improvements = isset($improvements_matches[1]) ? $improvements_matches[1] : '';
+
+                        echo '
+                        <div class="evalCard" comment= "'.$comments.'" data-explain=" '.$improvements.'">
+                            <div class="upHalf">
+                                <h3>LLO '. ($index + 1) . '</h3>
+                                <button class="scoreExplain">?</button>
+                            </div>                           
+                            <div class="downHalf">
+                            <div><p>' . htmlspecialchars($llo). '</p> </div>
+                                <div class="scoreContainer">
+                                    <div class="scoreBar">
+                                        <div class="scorePer" per="'. htmlspecialchars($score) . '%" style="max-width: '. htmlspecialchars($score) . '%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>';
+                    }
+                }
+            } else {
+                echo '<p>No evaluations found.</p>';
+            }
+        } else {
+            echo '<p>Invalid request. No data received.</p>';
+        }
+        ?>
     </div>
 
     <!-- POPUP WINDOW -->
@@ -75,6 +92,7 @@ include('./nav.php');
             <h3>You Scored <span>40%</span> on <span>LLO 1</span></h3>
             <div class="separator"></div>
             <span class="close">&times;</span>
+            <p>Here will be the explanation text.</p>
             <p>Here will be the explanation text.</p>
         </div>
     </div>
