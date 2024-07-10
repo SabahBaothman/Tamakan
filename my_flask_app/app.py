@@ -56,6 +56,7 @@ def evaluate_with_gpt(slide_summaries, student_explanation, LOs):
     results = []
     for lo in LOs:
         prompt = (
+            
             "You are evaluating a student's explanation. Please provide a thorough evaluation based on the following guidelines:\n\n"
             "Note1: Provide a title for each improvement paragraph, not the word 'Title' itself.\n"
             "Note2: Summarize the comments for each Learning Objective (LO) to be no more than 60 words.\n"

@@ -6,6 +6,9 @@ if (!isset($_SESSION['id'])) {
     exit();
 }
 
+// Increase maximum execution time to 300 seconds (5 minutes)
+set_time_limit(300);
+
 include('../db/db_conn.php');
 
 if (isset($_GET['teacher_id'], $_GET['course_id'], $_GET['chapter_number'])) {
@@ -41,48 +44,55 @@ if (isset($_GET['teacher_id'], $_GET['course_id'], $_GET['chapter_number'])) {
         $absolute_pdf_file = realpath($pdf_file);
         echo "Absolute PDF Path: $absolute_pdf_file, Start Page: $first_slide, End Page: $last_slide<br>";
 
-        // Call Flask service for summarization
-        $flask_service_url = 'http://localhost:5000/summarize';
-        $data = array(
-            'pdf_path' => $absolute_pdf_file,
-            'start_page' => $first_slide,
-            'end_page' => $last_slide
-        );
-        $options = array(
-            'http' => array(
-                'header'  => "Content-Type: application/json\r\n",
-                'method'  => 'POST',
-                'content' => json_encode($data),
-            ),
-        );
-        $context  = stream_context_create($options);
-        $result = file_get_contents($flask_service_url, false, $context);
+        // Call Flask service for summarization in chunks
+        $chunk_size = 5; // Number of pages per chunk
+        $summaries = '';
+        for ($i = $first_slide; $i <= $last_slide; $i += $chunk_size) {
+            $chunk_end = min($i + $chunk_size - 1, $last_slide);
 
-        // Handle potential errors
-        if ($result === FALSE) {
-            $error = error_get_last();
-            echo 'HTTP request failed. Error: ' . $error['message'];
-            die('Error occurred while calling Flask service.');
+            $flask_service_url = 'http://localhost:5000/summarize';
+            $data = array(
+                'pdf_path' => $absolute_pdf_file,
+                'start_page' => $i,
+                'end_page' => $chunk_end
+            );
+            $options = array(
+                'http' => array(
+                    'header'  => "Content-Type: application/json\r\n",
+                    'method'  => 'POST',
+                    'content' => json_encode($data),
+                    'timeout' => 120, // Increase timeout to 2 minutes
+                ),
+            );
+            $context  = stream_context_create($options);
+            $result = @file_get_contents($flask_service_url, false, $context);
+
+            // Handle potential errors
+            if ($result === FALSE) {
+                $error = error_get_last();
+                echo 'HTTP request failed. Error: ' . $error['message'];
+                die('Error occurred while calling Flask service.');
+            }
+
+            $response_data = json_decode($result, true);
+            if (isset($response_data['error'])) {
+                die('Flask service error: ' . $response_data['error']);
+            }
+
+            $summaries .= $response_data['summary'];
         }
-
-        $response_data = json_decode($result, true);
-        if (isset($response_data['error'])) {
-            die('Flask service error: ' . $response_data['error']);
-        }
-
-        $summary = $response_data['summary'];
 
         // Save summary in the database
         $query3 = "UPDATE lessons SET summarization = ? WHERE teacher_id = ? AND course_id = ? AND chapter_number = ? AND number = ?";
         $stmt3 = mysqli_prepare($conn, $query3);
-        mysqli_stmt_bind_param($stmt3, "siiii", $summary, $teacher_id, $course_id, $chapter_number, $lesson_number);
+        mysqli_stmt_bind_param($stmt3, "siiii", $summaries, $teacher_id, $course_id, $chapter_number, $lesson_number);
         $stmt3->execute();
         $stmt3->close();
     }
-    
+
     header("Location: ../pages/chapters.php");
     exit();
-    
+
 } else {
     die("Invalid request.");
 }
