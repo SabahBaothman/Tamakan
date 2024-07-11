@@ -17,8 +17,7 @@ def summarize():
     pdf_path = data.get('pdf_path')
     start_page = data.get('start_page')
     end_page = data.get('end_page')
-    print(f'Received request with path: {pdf_path}, start_page: {
-          start_page}, end_page: {end_page}')
+    print(f'Received request with path: {pdf_path}, start_page: {start_page}, end_page: {end_page}')
 
     if not pdf_path or start_page is None or end_page is None:
         return jsonify({'error': 'Missing parameters'}), 400
