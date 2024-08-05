@@ -24,6 +24,9 @@ Navigate to the directory containing the app.py file and run the AI model server
 3. Open your web browser and navigate to http://localhost/pages/ to access the website.
 4. Start by logging in and begin using the site features.
 
+## Website Demo
+https://github.com/user-attachments/assets/6180472f-ebc6-4e51-bb97-9e8602205b5f
+
 
   
 
