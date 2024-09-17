@@ -1,5 +1,5 @@
 # Tamakan
-A website that provides the opportunity to explain scientific content and receive documentary comments to artificial intelligence, and it has to rely on exams.
+A website that utilizes Natural Language Processing (NLP) to analyze spoken explanations of scientific content. Users explain concepts by voice, and the NLP-powered AI compares the explanation to provided slides, assigning a score based on accuracy and clarity. The system also gives detailed feedback on how to improve the explanation, providing both evaluative and documentary comments. The platform integrates exams to further assess user understanding and progress.
 
 ## Prerequisites
 Before you begin, ensure you have met the following requirements:
